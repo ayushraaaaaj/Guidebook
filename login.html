@@ -1,0 +1,1640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guidebook - Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f0f0f0;
+            color: #1a202c;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        /* Midjourney-Style Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);
+            z-index: -10;
+        }
+        
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.3) 0%, transparent 50%);
+            animation: backgroundShift 20s ease-in-out infinite;
+        }
+        
+        @keyframes backgroundShift {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.7; }
+            33% { transform: scale(1.1) rotate(120deg); opacity: 0.9; }
+            66% { transform: scale(0.9) rotate(240deg); opacity: 0.8; }
+        }
+
+        /* Midjourney-Style Floating Orbs */
+        .morphing-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -5;
+            overflow: hidden;
+        }
+        
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(40px);
+            animation: midjourneyFloat 25s ease-in-out infinite;
+        }
+        
+        .shape-1 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(168, 85, 247, 0.4) 0%, rgba(99, 102, 241, 0.2) 50%, transparent 100%);
+            top: -10%;
+            left: -10%;
+            animation-delay: 0s;
+        }
+        
+        .shape-2 {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(236, 72, 153, 0.3) 0%, rgba(251, 113, 133, 0.2) 50%, transparent 100%);
+            top: 20%;
+            right: -15%;
+            animation-delay: -8s;
+        }
+        
+        .shape-3 {
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, rgba(147, 197, 253, 0.2) 50%, transparent 100%);
+            bottom: -20%;
+            left: 20%;
+            animation-delay: -15s;
+        }
+        
+        .shape-4 {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.4) 0%, rgba(110, 231, 183, 0.2) 50%, transparent 100%);
+            top: 60%;
+            right: 10%;
+            animation-delay: -5s;
+        }
+        
+        @keyframes midjourneyFloat {
+            0%, 100% {
+                transform: translate(0, 0) scale(1) rotate(0deg);
+                opacity: 0.6;
+            }
+            25% {
+                transform: translate(100px, -50px) scale(1.2) rotate(90deg);
+                opacity: 0.8;
+            }
+            50% {
+                transform: translate(-50px, 100px) scale(0.8) rotate(180deg);
+                opacity: 0.4;
+            }
+            75% {
+                transform: translate(-100px, -80px) scale(1.1) rotate(270deg);
+                opacity: 0.7;
+            }
+        }
+
+        /* Midjourney-Style Particles */
+        .floating-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -3;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            pointer-events: none;
+        }
+        
+        .particle-small {
+            width: 2px;
+            height: 2px;
+            background: rgba(168, 85, 247, 0.8);
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
+            animation: midjourneyParticle 12s linear infinite;
+        }
+        
+        .particle-medium {
+            width: 3px;
+            height: 3px;
+            background: rgba(236, 72, 153, 0.7);
+            border-radius: 50%;
+            box-shadow: 0 0 15px rgba(236, 72, 153, 0.4);
+            animation: midjourneyParticle 15s linear infinite;
+        }
+        
+        .particle-large {
+            width: 4px;
+            height: 4px;
+            background: rgba(59, 130, 246, 0.6);
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+            animation: midjourneyParticle 18s linear infinite;
+        }
+        
+        .particle-glow {
+            width: 1px;
+            height: 20px;
+            background: linear-gradient(to bottom, rgba(168, 85, 247, 0.8), transparent);
+            animation: midjourneyBeam 8s linear infinite;
+        }
+        
+        @keyframes midjourneyParticle {
+            0% {
+                transform: translateY(100vh) translateX(0) rotate(0deg) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+                transform: translateY(90vh) translateX(20px) rotate(45deg) scale(1);
+            }
+            90% {
+                opacity: 1;
+                transform: translateY(10vh) translateX(-20px) rotate(315deg) scale(1);
+            }
+            100% {
+                transform: translateY(-10vh) translateX(0) rotate(360deg) scale(0);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes midjourneyBeam {
+            0% {
+                transform: translateY(100vh) translateX(0) scaleY(0);
+                opacity: 0;
+            }
+            20% {
+                opacity: 1;
+                transform: translateY(80vh) translateX(10px) scaleY(1);
+            }
+            80% {
+                opacity: 1;
+                transform: translateY(20vh) translateX(-10px) scaleY(1);
+            }
+            100% {
+                transform: translateY(-10vh) translateX(0) scaleY(0);
+                opacity: 0;
+            }
+        }
+
+        /* Midjourney Grid Pattern */
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(168, 85, 247, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(168, 85, 247, 0.05) 1px, transparent 1px);
+            background-size: 60px 60px;
+            animation: midjourneyGrid 15s ease-in-out infinite;
+            z-index: -4;
+        }
+        
+        body.dark-mode .grid-overlay {
+            background-image: 
+                linear-gradient(rgba(139, 92, 246, 0.15) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(139, 92, 246, 0.15) 1px, transparent 1px);
+        }
+        
+        @keyframes midjourneyGrid {
+            0%, 100% {
+                opacity: 0.3;
+                transform: scale(1) rotate(0deg);
+            }
+            50% {
+                opacity: 0.6;
+                transform: scale(1.05) rotate(0.5deg);
+            }
+        }
+
+        /* Keyframe Animations */
+        @keyframes morphBackground {
+            0%, 100% { 
+                background-position: 0% 50%;
+                filter: hue-rotate(0deg) brightness(1);
+            }
+            25% { 
+                background-position: 100% 0%;
+                filter: hue-rotate(5deg) brightness(1.05);
+            }
+            50% { 
+                background-position: 100% 100%;
+                filter: hue-rotate(10deg) brightness(0.95);
+            }
+            75% { 
+                background-position: 0% 100%;
+                filter: hue-rotate(5deg) brightness(1.02);
+            }
+        }
+
+        @keyframes morphFloat {
+            0%, 100% {
+                transform: translateX(0) translateY(0) rotate(0deg) scale(1);
+                border-radius: 50%;
+            }
+            25% {
+                transform: translateX(100px) translateY(-50px) rotate(90deg) scale(1.2);
+                border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            }
+            50% {
+                transform: translateX(50px) translateY(100px) rotate(180deg) scale(0.8);
+                border-radius: 70% 30% 30% 70% / 60% 60% 40% 40%;
+            }
+            75% {
+                transform: translateX(-50px) translateY(50px) rotate(270deg) scale(1.1);
+                border-radius: 40% 60% 60% 40% / 70% 30% 70% 30%;
+            }
+        }
+
+        @keyframes floatSmall {
+            0%, 100% {
+                transform: translateY(100vh) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10%, 90% {
+                opacity: 0.8;
+            }
+            50% {
+                transform: translateY(50vh) translateX(20px) rotate(180deg);
+                opacity: 1;
+            }
+        }
+
+        @keyframes floatMedium {
+            0%, 100% {
+                transform: translateY(100vh) translateX(0) rotate(0deg) scale(1);
+                opacity: 0;
+            }
+            15%, 85% {
+                opacity: 0.7;
+            }
+            50% {
+                transform: translateY(40vh) translateX(-30px) rotate(270deg) scale(1.5);
+                opacity: 1;
+            }
+        }
+
+        @keyframes floatLarge {
+            0%, 100% {
+                transform: translateY(100vh) translateX(0) rotate(0deg) scale(1);
+                opacity: 0;
+            }
+            20%, 80% {
+                opacity: 0.6;
+            }
+            50% {
+                transform: translateY(30vh) translateX(40px) rotate(360deg) scale(0.7);
+                opacity: 1;
+            }
+        }
+
+        @keyframes floatGlow {
+            0%, 100% {
+                transform: translateY(100vh) translateX(0) rotate(0deg);
+                opacity: 0;
+                box-shadow: 0 0 20px rgba(79, 172, 254, 0.5);
+            }
+            25%, 75% {
+                opacity: 1;
+                box-shadow: 0 0 40px rgba(79, 172, 254, 0.8);
+            }
+            50% {
+                transform: translateY(20vh) translateX(-20px) rotate(180deg);
+                opacity: 1;
+                box-shadow: 0 0 60px rgba(79, 172, 254, 1);
+            }
+        }
+
+        @keyframes gridPulse {
+            0%, 100% {
+                opacity: 0.3;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.6;
+                transform: scale(1.1);
+            }
+        }
+
+        /* Neural Network Visualization */
+        .neural-network {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        .neural-node {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(99, 102, 241, 0.4);
+            border-radius: 50%;
+            box-shadow: 0 0 6px rgba(99, 102, 241, 0.2);
+            animation: neuralPulse 4s ease-in-out infinite;
+        }
+        
+        .neural-connection {
+            position: absolute;
+            height: 0.5px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(99, 102, 241, 0.2), 
+                rgba(139, 92, 246, 0.15), 
+                transparent
+            );
+            transform-origin: left center;
+            animation: dataFlow 6s linear infinite;
+        }
+        
+        @keyframes neuralPulse {
+            0%, 100% {
+                opacity: 0.3;
+                transform: scale(1);
+                box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.5);
+                box-shadow: 0 0 20px rgba(102, 126, 234, 0.8);
+            }
+        }
+        
+        @keyframes dataFlow {
+            0% {
+                opacity: 0;
+                transform: scaleX(0);
+            }
+            20% {
+                opacity: 1;
+                transform: scaleX(1);
+            }
+            80% {
+                opacity: 1;
+                transform: scaleX(1);
+            }
+            100% {
+                opacity: 0;
+                transform: scaleX(0);
+            }
+        }
+        
+        /* AI Data Stream Effect */
+        .data-stream {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        .data-line {
+            position: absolute;
+            width: 1px;
+            height: 80px;
+            background: linear-gradient(180deg, 
+                transparent,
+                rgba(99, 102, 241, 0.3),
+                rgba(139, 92, 246, 0.2),
+                transparent
+            );
+            top: -80px;
+            animation: streamFlow 8s linear infinite;
+        }
+        
+        @keyframes streamFlow {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Holographic Text Effect */
+        .holographic-text {
+            position: relative;
+            background: linear-gradient(45deg, #667eea, #764ba2, #4facfe, #00f2fe);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: holographicShift 3s ease-in-out infinite;
+            text-shadow: 
+                0 0 10px rgba(102, 126, 234, 0.5),
+                0 0 20px rgba(118, 75, 162, 0.3),
+                0 0 30px rgba(79, 172, 254, 0.2);
+        }
+        
+        @keyframes holographicShift {
+            0%, 100% {
+                background-position: 0% 50%;
+                filter: hue-rotate(0deg);
+            }
+            25% {
+                background-position: 100% 0%;
+                filter: hue-rotate(90deg);
+            }
+            50% {
+                background-position: 100% 100%;
+                filter: hue-rotate(180deg);
+            }
+            75% {
+                background-position: 0% 100%;
+                filter: hue-rotate(270deg);
+            }
+        }
+        
+        /* Depth of Field Blur Layers */
+        .blur-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            pointer-events: none;
+        }
+        
+        .blur-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            animation: floatBlur 25s ease-in-out infinite;
+        }
+        
+        .blur-orb-1 {
+            width: 160px;
+            height: 160px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.08), transparent);
+            top: 25%;
+            left: 75%;
+            animation-delay: 0s;
+        }
+        
+        .blur-orb-2 {
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.06), transparent);
+            bottom: 30%;
+            right: 60%;
+            animation-delay: -8s;
+        }
+        
+        .blur-orb-3 {
+            width: 140px;
+            height: 140px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.1), transparent);
+            top: 60%;
+            left: 15%;
+            animation-delay: -15s;
+        }
+        
+        @keyframes floatBlur {
+            0%, 100% {
+                transform: translateX(0) translateY(0) scale(1);
+                opacity: 0.3;
+            }
+            33% {
+                transform: translateX(50px) translateY(-30px) scale(1.2);
+                opacity: 0.6;
+            }
+            66% {
+                transform: translateX(-30px) translateY(40px) scale(0.8);
+                opacity: 0.4;
+            }
+        }
+        
+        /* Enhanced Wave Animation */
+        .wave-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            z-index: -2;
+            overflow: hidden;
+        }
+        
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 200%;
+            height: 80px;
+            background: linear-gradient(90deg, 
+                rgba(168, 85, 247, 0.08), 
+                rgba(236, 72, 153, 0.12), 
+                rgba(59, 130, 246, 0.08)
+            );
+            border-radius: 50% 50% 0 0;
+            animation: midjourneyWave 12s ease-in-out infinite;
+        }
+        
+        .wave:nth-child(2) {
+            animation-delay: -4s;
+            opacity: 0.6;
+            height: 60px;
+            background: linear-gradient(90deg, 
+                rgba(236, 72, 153, 0.06), 
+                rgba(16, 185, 129, 0.1), 
+                rgba(168, 85, 247, 0.06)
+            );
+        }
+        
+        .wave:nth-child(3) {
+            animation-delay: -8s;
+            opacity: 0.4;
+            height: 40px;
+            background: linear-gradient(90deg, 
+                rgba(59, 130, 246, 0.04), 
+                rgba(168, 85, 247, 0.08), 
+                rgba(236, 72, 153, 0.04)
+            );
+        }
+        
+        @keyframes midjourneyWave {
+            0%, 100% {
+                transform: translateX(-50%) rotate(0deg) scale(1);
+            }
+            33% {
+                transform: translateX(-50%) rotate(120deg) scale(1.1);
+            }
+            66% {
+                transform: translateX(-50%) rotate(240deg) scale(0.9);
+            }
+        }
+        
+        body.dark-mode .wave {
+            background: linear-gradient(90deg, 
+                rgba(139, 92, 246, 0.15), 
+                rgba(236, 72, 153, 0.2), 
+                rgba(59, 130, 246, 0.15)
+            );
+        }
+        
+        body.dark-mode .wave:nth-child(2) {
+            background: linear-gradient(90deg, 
+                rgba(236, 72, 153, 0.12), 
+                rgba(16, 185, 129, 0.18), 
+                rgba(139, 92, 246, 0.12)
+            );
+        }
+        
+        body.dark-mode .wave:nth-child(3) {
+            background: linear-gradient(90deg, 
+                rgba(59, 130, 246, 0.08), 
+                rgba(139, 92, 246, 0.15), 
+                rgba(236, 72, 153, 0.08)
+            );
+        }
+
+        /* Login Container */
+        .login-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 20px;
+            padding: 40px 36px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .login-btn:hover::before {
+            left: 100%;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.3);
+            background: linear-gradient(135deg, #5b52f0, #8b5cf6);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo-icon {
+            font-size: 4rem;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .brand-name {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+        
+        .brand-name.holographic::before {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            opacity: 0.3;
+            animation: holographicGlow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes holographicGlow {
+            0% {
+                text-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+                transform: translateX(0);
+            }
+            100% {
+                text-shadow: 0 0 20px rgba(118, 75, 162, 0.8);
+                transform: translateX(1px);
+            }
+        }
+
+        .tagline {
+            color: #64748b;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 0;
+            opacity: 0.8;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #1a202c;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.7);
+            color: #1e293b;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(15px);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .form-group input::placeholder {
+            color: #64748b;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
+
+        .password-toggle:hover {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.2);
+        }
+
+        .login-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .login-btn:hover::before {
+            left: 100%;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 12px 12px 24px #c8c8c8, -12px -12px 24px #ffffff;
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 32px 0;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .divider span {
+            padding: 0 16px;
+            font-size: 0.9rem;
+        }
+
+        .social-login {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .social-btn {
+            flex: 1;
+            padding: 12px;
+            background: #e8e8e8;
+            border: none;
+            border-radius: 15px;
+            color: #1a202c;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            box-shadow: 6px 6px 12px #c8c8c8, -6px -6px 12px #ffffff;
+        }
+
+        .social-btn:hover {
+            background: #d0d0d0;
+            transform: translateY(-2px);
+            box-shadow: 8px 8px 16px #c8c8c8, -8px -8px 16px #ffffff;
+        }
+
+        .signup-link {
+            text-align: center;
+            color: #64748b;
+            font-size: 0.95rem;
+        }
+
+        .signup-link a {
+            color: #475569;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .signup-link a:hover {
+            color: #1a202c;
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Error Message */
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #fca5a5;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 32px 24px;
+                margin: 20px;
+            }
+            
+            .brand-name {
+                font-size: 2rem;
+            }
+            
+            .social-login {
+                flex-direction: column;
+            }
+        }
+
+        /* Enhanced Dark Mode */
+        body.dark-mode {
+            color: #f1f5f9;
+            background: #0a0a0f;
+        }
+        
+        body.dark-mode .bg-animation {
+            background: radial-gradient(ellipse at center, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+        }
+        
+        body.dark-mode .bg-animation::before {
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(139, 92, 246, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(236, 72, 153, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(59, 130, 246, 0.4) 0%, transparent 50%);
+        }
+        
+        /* Light mode optimizations */
+        body:not(.dark-mode) .bg-animation {
+            background: linear-gradient(135deg, #fafafa 0%, #f8fafc 25%, #ffffff 50%, #f1f5f9 75%, #fafafa 100%);
+        }
+        
+        /* Light mode shape optimizations */
+        body:not(.dark-mode) .shape-1 {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.12), rgba(168, 85, 247, 0.08));
+        }
+        
+        body:not(.dark-mode) .shape-2 {
+            background: linear-gradient(45deg, rgba(59, 130, 246, 0.1), rgba(147, 197, 253, 0.06));
+        }
+        
+        body:not(.dark-mode) .shape-3 {
+            background: linear-gradient(225deg, rgba(16, 185, 129, 0.08), rgba(110, 231, 183, 0.05));
+        }
+        
+        body:not(.dark-mode) .shape-4 {
+            background: linear-gradient(315deg, rgba(139, 92, 246, 0.1), rgba(196, 181, 253, 0.06));
+        }
+        
+        body.dark-mode .shape-1 {
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.6) 0%, rgba(99, 102, 241, 0.3) 50%, transparent 100%);
+        }
+        
+        body.dark-mode .shape-2 {
+            background: radial-gradient(circle, rgba(236, 72, 153, 0.5) 0%, rgba(251, 113, 133, 0.3) 50%, transparent 100%);
+        }
+        
+        body.dark-mode .shape-3 {
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.5) 0%, rgba(147, 197, 253, 0.3) 50%, transparent 100%);
+        }
+        
+        body.dark-mode .shape-4 {
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.6) 0%, rgba(110, 231, 183, 0.3) 50%, transparent 100%);
+        }
+        
+        body.dark-mode .neural-node {
+            background: rgba(96, 165, 250, 0.8);
+            box-shadow: 0 0 10px rgba(96, 165, 250, 0.5);
+        }
+        
+        body.dark-mode .neural-connection {
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(96, 165, 250, 0.5), 
+                rgba(139, 92, 246, 0.4), 
+                transparent
+            );
+        }
+        
+        body.dark-mode .data-line {
+            background: linear-gradient(180deg, 
+                transparent,
+                rgba(96, 165, 250, 0.9),
+                rgba(139, 92, 246, 0.7),
+                transparent
+            );
+        }
+        
+        body.dark-mode .blur-orb-1 {
+            background: radial-gradient(circle, rgba(96, 165, 250, 0.3), transparent);
+        }
+        
+        body.dark-mode .blur-orb-2 {
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.25), transparent);
+        }
+        
+        body.dark-mode .blur-orb-3 {
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.35), transparent);
+        }
+        
+        body.dark-mode .login-card {
+            background: rgba(15, 15, 35, 0.85);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(139, 92, 246, 0.1);
+            backdrop-filter: blur(25px);
+        }
+        
+        body.dark-mode .login-card:hover {
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(139, 92, 246, 0.2);
+            transform: translateY(-4px);
+        }
+        
+        body.dark-mode .brand-name {
+            color: #f8fafc;
+            text-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+        }
+        
+        body.dark-mode .tagline {
+            color: #94a3b8;
+        }
+        
+        body.dark-mode .form-group label {
+            color: #cbd5e1;
+        }
+        
+        body.dark-mode .form-group input {
+            background: rgba(15, 15, 35, 0.7);
+            color: #f8fafc;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+        }
+        
+        body.dark-mode .form-group input:focus {
+            background: rgba(15, 15, 35, 0.9);
+            border-color: rgba(139, 92, 246, 0.6);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4), 0 0 0 3px rgba(139, 92, 246, 0.2);
+        }
+        
+        body.dark-mode .form-group input::placeholder {
+            color: #64748b;
+        }
+        
+        body.dark-mode .login-btn {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.8), rgba(99, 102, 241, 0.9));
+            color: #ffffff;
+            border: 1px solid rgba(139, 92, 246, 0.4);
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.3);
+        }
+        
+        body.dark-mode .login-btn:hover {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 1), rgba(99, 102, 241, 1));
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        body.dark-mode .social-btn {
+            background: rgba(15, 15, 35, 0.8);
+            color: #cbd5e1;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+        }
+        
+        body.dark-mode .social-btn:hover {
+            background: rgba(139, 92, 246, 0.2);
+            color: #f8fafc;
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.3);
+        }
+        
+        body.dark-mode .signup-link {
+            color: #94a3b8;
+        }
+        
+        body.dark-mode .signup-link a {
+            color: #60a5fa;
+        }
+        
+        body.dark-mode .signup-link a:hover {
+            color: #93c5fd;
+        }
+    </style>
+</head>
+<body>
+    <!-- Mindblowing Midjourney-Style Animated Background -->
+    <div class="bg-animation"></div>
+    
+    <!-- Dynamic Morphing Shapes -->
+    <div class="morphing-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+        <div class="shape shape-4"></div>
+    </div>
+    
+    <!-- Neural Network Visualization -->
+    <div class="neural-network" id="neuralNetwork">
+        <!-- Neural nodes and connections will be dynamically generated -->
+    </div>
+    
+    <!-- AI Data Stream -->
+    <div class="data-stream" id="dataStream">
+        <!-- Data lines will be dynamically generated -->
+    </div>
+    
+    <!-- Depth of Field Blur Layers -->
+    <div class="blur-layer">
+        <div class="blur-orb blur-orb-1"></div>
+        <div class="blur-orb blur-orb-2"></div>
+        <div class="blur-orb blur-orb-3"></div>
+    </div>
+    
+    <!-- Grid Overlay -->
+    <div class="grid-overlay"></div>
+    
+    <!-- Enhanced Floating Particles -->
+    <div class="floating-particles" id="particleContainer">
+        <!-- Particles will be dynamically generated -->
+    </div>
+    
+    <!-- Wave Animation -->
+    <div class="wave-container">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+    </div>
+
+    <div class="login-container">
+        <div class="login-card">
+            <div class="logo-section">
+                <div class="logo-icon">🎯</div>
+                <h1 class="brand-name">Guidebook</h1>
+                <p class="tagline">AI-Powered Student Guidance Platform</p>
+            </div>
+
+            <div id="errorMessage" class="error-message"></div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" placeholder="Enter your email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter your password" required>
+                    <button type="button" class="password-toggle" onclick="togglePassword()">👁️</button>
+                </div>
+
+                <button type="submit" class="login-btn" id="loginBtn">
+                    <span class="btn-text">Sign In</span>
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <span>Signing in...</span>
+                    </div>
+                </button>
+            </form>
+
+            <div class="divider">
+                <span>or continue with</span>
+            </div>
+
+            <div class="social-login">
+                <button class="social-btn" onclick="socialLogin('google')">
+                    <span>🔍</span>
+                    <span>Google</span>
+                </button>
+                <button class="social-btn" onclick="socialLogin('github')">
+                    <span>🐙</span>
+                    <span>GitHub</span>
+                </button>
+            </div>
+
+            <div class="signup-link">
+                Don't have an account? <a href="#" onclick="showSignup()">Sign up</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Password toggle
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleBtn = document.querySelector('.password-toggle');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleBtn.textContent = '🙈';
+            } else {
+                passwordInput.type = 'password';
+                toggleBtn.textContent = '👁️';
+            }
+        }
+
+        // Form submission
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            if (!email || !password) {
+                showError('Please fill in all fields');
+                return;
+            }
+            
+            // Show loading state
+            const btn = document.getElementById('loginBtn');
+            const btnText = btn.querySelector('.btn-text');
+            const loading = btn.querySelector('.loading');
+            
+            btnText.style.display = 'none';
+            loading.style.display = 'flex';
+            btn.disabled = true;
+            
+            // Simulate login process
+            setTimeout(() => {
+                // For demo purposes, accept any email/password
+                if (email && password) {
+                    // Store login state
+                    localStorage.setItem('gb:loggedIn', 'true');
+                    localStorage.setItem('gb:userEmail', email);
+                    
+                    // Redirect to main page
+                    window.location.href = 'index.html';
+                } else {
+                    showError('Invalid credentials');
+                    btnText.style.display = 'block';
+                    loading.style.display = 'none';
+                    btn.disabled = false;
+                }
+            }, 2000);
+        });
+
+        // Social login
+        function socialLogin(provider) {
+            showError(`${provider} login coming soon!`);
+        }
+
+        // Show signup
+        function showSignup() {
+            showError('Sign up feature coming soon!');
+        }
+
+        // Error handling
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        // Check if already logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            if (localStorage.getItem('gb:loggedIn') === 'true') {
+                window.location.href = 'index.html';
+            }
+            
+            // Initialize the mindblowing animations
+            initializeAnimations();
+        });
+
+        // Enhanced Midjourney-Style Particle System
+        function createAdvancedParticle() {
+            const particleContainer = document.getElementById('particleContainer');
+            const particle = document.createElement('div');
+            
+            // Enhanced particle types with beams
+            const types = ['particle-small', 'particle-medium', 'particle-large', 'particle-glow'];
+            const randomType = types[Math.floor(Math.random() * types.length)];
+            
+            particle.className = `particle ${randomType}`;
+            
+            // Random starting position
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = '100vh';
+            
+            // Enhanced animation timing
+            const duration = 12 + Math.random() * 8; // 12-20 seconds for smoother effect
+            const delay = Math.random() * 3; // 0-3 seconds
+            
+            particle.style.animationDuration = duration + 's';
+            particle.style.animationDelay = delay + 's';
+            
+            particleContainer.appendChild(particle);
+            
+            // Remove particle after animation
+            setTimeout(() => {
+                if (particle.parentNode) {
+                    particle.parentNode.removeChild(particle);
+                }
+            }, (duration + delay) * 1000);
+        }
+
+        // Mouse interaction for dynamic effects
+        function addMouseInteraction() {
+            document.addEventListener('mousemove', (e) => {
+                const mouseX = e.clientX / window.innerWidth;
+                const mouseY = e.clientY / window.innerHeight;
+                
+                // Update morphing shapes based on mouse position
+                const shapes = document.querySelectorAll('.shape');
+                shapes.forEach((shape, index) => {
+                    const offsetX = (mouseX - 0.5) * 50 * (index + 1);
+                    const offsetY = (mouseY - 0.5) * 50 * (index + 1);
+                    
+                    shape.style.transform += ` translate(${offsetX}px, ${offsetY}px)`;
+                });
+                
+                // Create particles on mouse movement (throttled)
+                if (Math.random() < 0.1) {
+                    createInteractiveParticle(e.clientX, e.clientY);
+                }
+            });
+        }
+
+        // Interactive particles that follow mouse
+        function createInteractiveParticle(x, y) {
+            const particle = document.createElement('div');
+            particle.className = 'particle particle-glow';
+            particle.style.position = 'fixed';
+            particle.style.left = x + 'px';
+            particle.style.top = y + 'px';
+            particle.style.width = '3px';
+            particle.style.height = '3px';
+            particle.style.pointerEvents = 'none';
+            particle.style.animation = 'none';
+            particle.style.opacity = '0.8';
+            particle.style.zIndex = '10';
+            
+            document.body.appendChild(particle);
+            
+            // Animate the particle
+            let opacity = 0.8;
+            let size = 3;
+            
+            const animate = () => {
+                opacity -= 0.02;
+                size += 0.1;
+                
+                particle.style.opacity = opacity;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.transform = `translate(-50%, -50%) scale(${1 + (3 - size) * 0.1})`;
+                
+                if (opacity > 0) {
+                    requestAnimationFrame(animate);
+                } else {
+                    document.body.removeChild(particle);
+                }
+            };
+            
+            requestAnimationFrame(animate);
+        }
+
+        // Enhanced login form animations
+        function enhanceFormAnimations() {
+            const loginCard = document.querySelector('.login-card');
+            const inputs = document.querySelectorAll('input');
+            
+            // Add focus effects
+            inputs.forEach(input => {
+                input.addEventListener('focus', () => {
+                    loginCard.style.transform = 'translateY(-5px) scale(1.02)';
+                    loginCard.style.boxShadow = '12px 12px 24px #c0c0c0, -12px -12px 24px #ffffff';
+                    
+                    // Create particles around the input
+                    for (let i = 0; i < 5; i++) {
+                        setTimeout(() => {
+                            const rect = input.getBoundingClientRect();
+                            createInteractiveParticle(
+                                rect.left + Math.random() * rect.width,
+                                rect.top + Math.random() * rect.height
+                            );
+                        }, i * 100);
+                    }
+                });
+                
+                input.addEventListener('blur', () => {
+                    loginCard.style.transform = 'translateY(0) scale(1)';
+                    loginCard.style.boxShadow = '8px 8px 16px #c8c8c8, -8px -8px 16px #ffffff';
+                });
+            });
+        }
+
+        // Optimized Neural Network Generation
+        function createNeuralNetwork() {
+            const neuralContainer = document.getElementById('neuralNetwork');
+            const nodeCount = 10; // Reduced for better performance
+            const nodes = [];
+            
+            // Create neural nodes
+            for (let i = 0; i < nodeCount; i++) {
+                const node = document.createElement('div');
+                node.className = 'neural-node';
+                node.style.left = Math.random() * 100 + '%';
+                node.style.top = Math.random() * 100 + '%';
+                node.style.animationDelay = Math.random() * 3 + 's';
+                
+                neuralContainer.appendChild(node);
+                nodes.push({
+                    element: node,
+                    x: parseFloat(node.style.left),
+                    y: parseFloat(node.style.top)
+                });
+            }
+            
+            // Create connections between nearby nodes
+            for (let i = 0; i < nodes.length; i++) {
+                for (let j = i + 1; j < nodes.length; j++) {
+                    const distance = Math.sqrt(
+                        Math.pow(nodes[i].x - nodes[j].x, 2) + 
+                        Math.pow(nodes[i].y - nodes[j].y, 2)
+                    );
+                    
+                    if (distance < 30 && Math.random() > 0.5) {
+                        const connection = document.createElement('div');
+                        connection.className = 'neural-connection';
+                        
+                        const angle = Math.atan2(
+                            nodes[j].y - nodes[i].y, 
+                            nodes[j].x - nodes[i].x
+                        ) * 180 / Math.PI;
+                        
+                        connection.style.left = nodes[i].x + '%';
+                        connection.style.top = nodes[i].y + '%';
+                        connection.style.width = distance + 'vw';
+                        connection.style.transform = `rotate(${angle}deg)`;
+                        connection.style.animationDelay = Math.random() * 4 + 's';
+                        
+                        neuralContainer.appendChild(connection);
+                    }
+                }
+            }
+        }
+        
+        // Optimized AI Data Stream Generation
+        function createDataStream() {
+            const streamContainer = document.getElementById('dataStream');
+            
+            for (let i = 0; i < 5; i++) { // Reduced count for performance
+                const dataLine = document.createElement('div');
+                dataLine.className = 'data-line';
+                dataLine.style.left = Math.random() * 100 + '%';
+                dataLine.style.animationDelay = Math.random() * 6 + 's';
+                dataLine.style.animationDuration = (4 + Math.random() * 4) + 's';
+                
+                streamContainer.appendChild(dataLine);
+                
+                // Remove and recreate after animation
+                setTimeout(() => {
+                    if (dataLine.parentNode) {
+                        dataLine.parentNode.removeChild(dataLine);
+                    }
+                    
+                    // Create new one
+                    setTimeout(() => {
+                        if (streamContainer) {
+                            const newLine = document.createElement('div');
+                            newLine.className = 'data-line';
+                            newLine.style.left = Math.random() * 100 + '%';
+                            newLine.style.animationDelay = '0s';
+                            newLine.style.animationDuration = (4 + Math.random() * 4) + 's';
+                            streamContainer.appendChild(newLine);
+                        }
+                    }, Math.random() * 2000);
+                }, 8000);
+            }
+        }
+        
+        // Theme detection with light mode default
+        function initializeTheme() {
+            // Check for saved theme preference
+            const savedTheme = localStorage.getItem('gb:theme');
+            
+            // Default to light mode for better aesthetics
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+            } else {
+                document.body.classList.remove('dark-mode');
+            }
+            
+            // Add theme toggle button
+            const themeToggle = document.createElement('button');
+            themeToggle.innerHTML = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+            themeToggle.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: rgba(255, 255, 255, 0.1);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                border-radius: 50%;
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+                cursor: pointer;
+                backdrop-filter: blur(10px);
+                transition: all 0.3s ease;
+                z-index: 1000;
+            `;
+            
+            themeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('dark-mode');
+                const isDark = document.body.classList.contains('dark-mode');
+                themeToggle.innerHTML = isDark ? '☀️' : '🌙';
+                localStorage.setItem('gb:theme', isDark ? 'dark' : 'light');
+            });
+            
+            document.body.appendChild(themeToggle);
+        }
+        
+        // Initialize all animations
+        function initializeAnimations() {
+            // Create initial particles
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    createAdvancedParticle();
+                }, i * 300);
+            }
+            
+            // Create neural network (reduced for performance)
+            createNeuralNetwork();
+            
+            // Create data streams (optimized)
+            createDataStream();
+            
+            // Enhanced particle generation for Midjourney effect
+            setInterval(createAdvancedParticle, 800);
+            
+            // More frequent effects for dynamic feel
+            setInterval(createDataStream, 12000);
+            
+            // Add mouse interactions
+            addMouseInteraction();
+            
+            // Enhance form animations
+            enhanceFormAnimations();
+            
+            // Initialize theme
+            initializeTheme();
+            
+            // Add window resize handler
+            window.addEventListener('resize', () => {
+                // Recreate particles for new dimensions
+                const particles = document.querySelectorAll('#particleContainer .particle');
+                particles.forEach(particle => {
+                    if (particle.parentNode) {
+                        particle.parentNode.removeChild(particle);
+                    }
+                });
+                
+                for (let i = 0; i < 10; i++) {
+                    setTimeout(() => {
+                        createAdvancedParticle();
+                    }, i * 100);
+                }
+            });
+        }
+
+        // Add particle animation
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 6 + 's';
+            document.querySelector('.floating-particles').appendChild(particle);
+            
+            setTimeout(() => {
+                particle.remove();
+            }, 6000);
+        }
+
+        // Create particles periodically
+        setInterval(createParticle, 2000);
+    </script>
+</body>
+</html>
+
