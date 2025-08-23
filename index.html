@@ -55,7 +55,15 @@
         }
         
         body.dark-mode .logo {
-            color: #60a5fa;
+            color: #f1f5f9;
+        }
+        
+        body.dark-mode .logo-icon svg #bookGradient stop:first-child {
+            stop-color: #8b5cf6;
+        }
+        
+        body.dark-mode .logo-icon svg #bookGradient stop:last-child {
+            stop-color: #a855f7;
         }
         
         /* Dark mode cards with improved styling */
@@ -146,6 +154,11 @@
             top: 0;
             z-index: 40;
             box-shadow: 8px 8px 16px #c8c8c8, -8px -8px 16px #ffffff;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        header.hidden {
+            transform: translateY(-100%);
         }
 
         .header-container {
@@ -166,25 +179,42 @@
         .header-right {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 20px;
+        }
+        
+        .user-name {
+            font-weight: 600;
+            color: #374151;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        body.dark-mode .user-name {
+            color: #f1f5f9;
+            background: rgba(30, 41, 59, 0.8);
+            border-color: rgba(148, 163, 184, 0.2);
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 12px;
-            font-size: 1.6rem;
-            font-weight: 800;
-            color: #1e40af;
-            letter-spacing: -0.5px;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e293b;
         }
-
-        .logo-icon {
-            font-size: 3rem;
-            background: linear-gradient(135deg, #ffd89b, #19547b);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        
+        .logo-icon svg {
+            filter: drop-shadow(0 2px 8px rgba(79, 70, 229, 0.4));
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .logo:hover .logo-icon svg {
+            transform: scale(1.08) translateY(-1px);
+            filter: drop-shadow(0 4px 12px rgba(79, 70, 229, 0.6));
         }
 
         h1 {
@@ -241,6 +271,196 @@
         .college-btn.disabled {
             opacity: 0.5;
             cursor: not-allowed;
+        }
+        
+        /* College Navigation */
+        .college-nav {
+            position: fixed;
+            top: 80px;
+            left: 0;
+            right: 0;
+            z-index: 999;
+            padding: 1rem 0;
+            pointer-events: none;
+            transform: translateY(0);
+            opacity: 1;
+            transition: all 0.3s ease-in-out;
+            height: 60px;
+        }
+
+        .college-nav.hidden {
+            transform: translateY(-100px);
+            opacity: 0;
+            z-index: 1;
+            height: 0;
+            padding: 0;
+        }
+
+        .college-nav.scroll-hidden {
+            transform: translateY(-100px);
+            opacity: 0;
+        }
+
+        .college-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            pointer-events: auto;
+        }
+
+        .college-btn {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            color: #374151;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .college-btn:hover {
+            background: rgba(255, 255, 255, 1);
+            border-color: rgba(79, 70, 229, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .college-btn.active {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            border-color: transparent;
+            color: white;
+            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.3);
+        }
+
+        /* Dark mode college navigation */
+        body.dark-mode .college-btn {
+            background: rgba(30, 41, 59, 0.9);
+            border-color: rgba(148, 163, 184, 0.2);
+            color: #e2e8f0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        body.dark-mode .college-btn:hover {
+            background: rgba(51, 65, 85, 0.9);
+            border-color: rgba(168, 85, 247, 0.4);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        body.dark-mode .college-btn.active {
+            background: linear-gradient(135deg, #a855f7, #8b5cf6);
+            color: white;
+            box-shadow: 0 8px 25px rgba(168, 85, 247, 0.4);
+        }
+
+        .content {
+            margin-top: 140px;
+            padding: 2rem 0;
+            min-height: calc(100vh - 140px);
+            transition: margin-top 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .content.no-college-nav {
+            margin-top: 80px;
+        }
+
+        /* Animate all content elements upward when college nav hides */
+        .page > * {
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(0);
+        }
+
+        .content.no-college-nav .page > * {
+            transform: translateY(-120px);
+        }
+
+        /* Staggered upward animation for different elements */
+        .content.no-college-nav .page > *:nth-child(1) {
+            transform: translateY(-120px);
+            transition-delay: 0.1s;
+        }
+
+        .content.no-college-nav .page > *:nth-child(2) {
+            transform: translateY(-120px);
+            transition-delay: 0.2s;
+        }
+
+        .content.no-college-nav .page > *:nth-child(3) {
+            transform: translateY(-120px);
+            transition-delay: 0.3s;
+        }
+
+        .content.no-college-nav .page > *:nth-child(4) {
+            transform: translateY(-120px);
+            transition-delay: 0.4s;
+        }
+
+        .content.no-college-nav .page > *:nth-child(n+5) {
+            transform: translateY(-120px);
+            transition-delay: 0.5s;
+        }
+        
+        .college-nav-btn {
+            background: rgba(255, 255, 255, 0.8);
+            color: #374151;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            padding: 12px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        }
+        
+        body.dark-mode .college-nav-btn {
+            background: rgba(51, 65, 85, 0.6);
+            color: #cbd5e1;
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+        
+        .college-nav-btn:hover {
+            background: rgba(255, 255, 255, 0.95);
+            color: #1e293b;
+            border-color: rgba(79, 70, 229, 0.3);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        body.dark-mode .college-nav-btn:hover {
+            background: rgba(51, 65, 85, 0.8);
+            color: #f1f5f9;
+            border-color: rgba(148, 163, 184, 0.2);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        }
+        
+        .college-nav-btn.active {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
+        }
+        
+        body.dark-mode .college-nav-btn.active {
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.9), rgba(124, 58, 237, 0.8));
+            border-color: rgba(79, 70, 229, 0.3);
+            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .college-nav-buttons {
+                gap: 10px;
+            }
+            
+            .college-nav-btn {
+                padding: 10px 16px;
+                font-size: 0.85rem;
+            }
         }
 
         /* Navigation - Internshala Style */
@@ -1021,6 +1241,811 @@
             border: 1px solid rgba(139, 92, 246, 0.3);
             box-shadow: 0 4px 16px rgba(139, 92, 246, 0.2);
         }
+        
+        /* Profile Page Styles */
+        .profile-container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .profile-sidebar {
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+        }
+        
+        .profile-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            font-size: 2rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            box-shadow: 0 4px 20px rgba(79, 70, 229, 0.3);
+        }
+        
+        .profile-stats {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin: 25px 0;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-item .stat-number {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #4f46e5;
+            margin-bottom: 5px;
+        }
+        
+        .stat-item .stat-label {
+            font-size: 0.8rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .member-since {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Dark mode profile styles */
+        body.dark-mode .profile-card {
+            background: rgba(30, 41, 59, 0.9);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            color: #f1f5f9;
+        }
+        
+        body.dark-mode .profile-main {
+            background: rgba(30, 41, 59, 0.9);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+        
+        body.dark-mode .profile-tabs {
+            background: rgba(15, 23, 42, 0.8);
+            border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+        }
+        
+        body.dark-mode .tab-btn {
+            color: #cbd5e1;
+        }
+        
+        body.dark-mode .tab-btn.active {
+            color: #60a5fa;
+            border-bottom-color: #60a5fa;
+            background: rgba(96, 165, 250, 0.1);
+        }
+        
+        body.dark-mode .tab-btn:hover:not(.active) {
+            color: #f1f5f9;
+            background: rgba(148, 163, 184, 0.1);
+        }
+        
+        body.dark-mode .profile-section h3 {
+            color: #f1f5f9;
+        }
+        
+        body.dark-mode .profile-bio {
+            background: rgba(15, 23, 42, 0.8);
+            border-left-color: #60a5fa;
+            color: #cbd5e1;
+        }
+        
+        body.dark-mode .empty-state {
+            background: rgba(15, 23, 42, 0.5);
+            border-color: rgba(148, 163, 184, 0.3);
+            color: #94a3b8;
+        }
+        
+        body.dark-mode .stat-item .stat-number {
+            color: #60a5fa;
+        }
+        
+        body.dark-mode .stat-item .stat-label {
+            color: #94a3b8;
+        }
+        
+        body.dark-mode .member-since {
+            color: #94a3b8;
+            border-top-color: rgba(148, 163, 184, 0.2);
+        }
+        
+        /* Profile form styling */
+        .profile-edit-form .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .profile-edit-form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        body.dark-mode .profile-edit-form label {
+            color: #f1f5f9;
+        }
+        
+        .profile-edit-form input,
+        .profile-edit-form textarea,
+        .profile-edit-form select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        body.dark-mode .profile-edit-form input,
+        body.dark-mode .profile-edit-form textarea,
+        body.dark-mode .profile-edit-form select {
+            background: rgba(51, 65, 85, 0.8);
+            border-color: rgba(148, 163, 184, 0.3);
+            color: #f1f5f9;
+        }
+        
+        .profile-edit-form input:focus,
+        .profile-edit-form textarea:focus,
+        .profile-edit-form select:focus {
+            outline: none;
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+        
+        body.dark-mode .profile-edit-form input:focus,
+        body.dark-mode .profile-edit-form textarea:focus,
+        body.dark-mode .profile-edit-form select:focus {
+            border-color: #60a5fa;
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+        }
+        
+        /* Skills and achievements styling */
+        .skill-tag {
+            display: inline-block;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin: 4px 8px 4px 0;
+            box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
+        }
+        
+        body.dark-mode .skill-tag {
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.9), rgba(124, 58, 237, 0.8));
+            box-shadow: 0 2px 8px rgba(79, 70, 229, 0.2);
+        }
+        
+        .achievement-item {
+            display: inline-block;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin: 6px 10px 6px 0;
+            box-shadow: 0 3px 12px rgba(16, 185, 129, 0.3);
+        }
+        
+        body.dark-mode .achievement-item {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.9), rgba(5, 150, 105, 0.8));
+            box-shadow: 0 3px 12px rgba(16, 185, 129, 0.2);
+        }
+        
+        .education-item {
+            background: rgba(248, 250, 252, 0.8);
+            padding: 16px;
+            border-radius: 12px;
+            border-left: 4px solid #4f46e5;
+            margin-bottom: 12px;
+        }
+        
+        body.dark-mode .education-item {
+            background: rgba(15, 23, 42, 0.8);
+            border-left-color: #60a5fa;
+            color: #cbd5e1;
+        }
+        
+        /* User experience cards */
+        .user-experience-card {
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+        
+        body.dark-mode .user-experience-card {
+            background: rgba(30, 41, 59, 0.9);
+            border-color: rgba(148, 163, 184, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .user-experience-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+        
+        body.dark-mode .user-experience-card:hover {
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+        }
+        
+        .user-experience-card h4 {
+            color: #1e293b;
+            margin-bottom: 12px;
+            font-size: 1.2rem;
+        }
+        
+        body.dark-mode .user-experience-card h4 {
+            color: #f1f5f9;
+        }
+        
+        .user-experience-card p {
+            color: #64748b;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+        
+        body.dark-mode .user-experience-card p {
+            color: #cbd5e1;
+        }
+        
+        .experience-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 16px;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
+        
+        body.dark-mode .experience-meta {
+            border-top-color: rgba(148, 163, 184, 0.2);
+        }
+        
+        .delete-btn {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .delete-btn:hover {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+        
+        .profile-main {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .profile-tabs {
+            display: flex;
+            background: rgba(248, 250, 252, 0.8);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        .tab-btn {
+            flex: 1;
+            padding: 15px 20px;
+            border: none;
+            background: transparent;
+            color: #64748b;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab-btn.active {
+            color: #4f46e5;
+            border-bottom-color: #4f46e5;
+            background: rgba(79, 70, 229, 0.05);
+        }
+        
+        .tab-btn:hover:not(.active) {
+            color: #374151;
+            background: rgba(0, 0, 0, 0.05);
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 30px;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .profile-section {
+            margin-bottom: 30px;
+        }
+        
+        .profile-section h3 {
+            color: #1e293b;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+        
+        .profile-bio {
+            color: #475569;
+            line-height: 1.6;
+            background: rgba(248, 250, 252, 0.8);
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #4f46e5;
+        }
+        
+        .empty-state {
+            color: #94a3b8;
+            font-style: italic;
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(248, 250, 252, 0.5);
+            border-radius: 12px;
+            border: 2px dashed #cbd5e1;
+        }
+        
+        .profile-edit-form {
+            max-width: 600px;
+        }
+        
+        .skills-list,
+        .education-list,
+        .achievements-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .skill-tag,
+        .education-item,
+        .achievement-item {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .education-item {
+            background: linear-gradient(135deg, #059669, #10b981);
+        }
+        
+        .achievement-item {
+            background: linear-gradient(135deg, #dc2626, #ef4444);
+        }
+        
+        .experiences-list {
+            display: grid;
+            gap: 20px;
+        }
+        
+        .user-experience-card {
+            background: rgba(248, 250, 252, 0.8);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        
+        .user-experience-card h4 {
+            color: #1e293b;
+            margin-bottom: 10px;
+        }
+        
+        .user-experience-card p {
+            color: #475569;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .experience-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+        
+        .delete-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: background 0.3s ease;
+        }
+        
+        .delete-btn:hover {
+            background: #dc2626;
+        }
+        
+        /* Dark mode profile styles */
+        body.dark-mode .profile-card,
+        body.dark-mode .profile-main {
+            background: rgba(30, 41, 59, 0.95);
+            border-color: rgba(148, 163, 184, 0.2);
+        }
+        
+        body.dark-mode .profile-tabs {
+            background: rgba(15, 23, 42, 0.8);
+        }
+        
+        body.dark-mode .tab-btn {
+            color: #94a3b8;
+        }
+        
+        body.dark-mode .tab-btn.active {
+            color: #a855f7;
+            border-bottom-color: #a855f7;
+            background: rgba(168, 85, 247, 0.1);
+        }
+        
+        body.dark-mode .profile-section h3,
+        body.dark-mode .user-experience-card h4 {
+            color: #f1f5f9;
+        }
+        
+        body.dark-mode .profile-bio {
+            background: rgba(15, 23, 42, 0.8);
+            border-left-color: #a855f7;
+        }
+        
+        body.dark-mode .user-experience-card {
+            background: rgba(15, 23, 42, 0.8);
+            border-color: rgba(148, 163, 184, 0.2);
+        }
+        
+        body.dark-mode .empty-state {
+            background: rgba(15, 23, 42, 0.5);
+            border-color: #475569;
+        }
+        
+        body.dark-mode .stat-item .stat-number {
+            color: #a855f7;
+        }
+        
+        @media (max-width: 768px) {
+            .profile-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .profile-sidebar {
+                position: static;
+            }
+            
+            .profile-tabs {
+                flex-wrap: wrap;
+            }
+            
+            .tab-btn {
+                flex: 1 1 50%;
+            }
+        }
+        
+        /* Activity Section Styles */
+        .activity-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 20px 0;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        
+        .activity-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .activity-card {
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.05), rgba(124, 58, 237, 0.05));
+            border: 2px solid rgba(79, 70, 229, 0.1);
+            border-radius: 16px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .activity-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #4f46e5, #7c3aed);
+        }
+        
+        .activity-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(79, 70, 229, 0.2);
+            border-color: rgba(79, 70, 229, 0.3);
+        }
+        
+        .activity-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .activity-content h4 {
+            color: #1e293b;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .activity-content p {
+            color: #64748b;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+        
+        .activity-status {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .activity-status.active {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+        }
+        
+        /* Expansion Section Styles */
+        .expansion-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 20px 0;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .expansion-subtitle {
+            color: #64748b;
+            font-size: 1rem;
+            text-align: center;
+            margin-bottom: 35px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .expansion-timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .expansion-timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, #4f46e5, #7c3aed);
+            transform: translateX(-50%);
+        }
+        
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+        
+        .timeline-marker {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            border: 4px solid white;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .timeline-marker.current {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            box-shadow: 0 0 20px rgba(79, 70, 229, 0.5);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.1); }
+        }
+        
+        .timeline-content {
+            background: rgba(248, 250, 252, 0.8);
+            padding: 25px;
+            border-radius: 16px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            width: 45%;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+        
+        .timeline-content:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+        
+        .timeline-content h4 {
+            color: #1e293b;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .timeline-content p {
+            color: #64748b;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+        
+        .timeline-status {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: #e2e8f0;
+            color: #64748b;
+        }
+        
+        .timeline-status.current {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+        }
+        
+        /* Dark Mode Styles for New Sections */
+        body.dark-mode .activity-section,
+        body.dark-mode .expansion-section {
+            background: rgba(30, 41, 59, 0.95);
+            border-color: rgba(148, 163, 184, 0.2);
+        }
+        
+        body.dark-mode .section-title {
+            color: #f1f5f9;
+        }
+        
+        body.dark-mode .activity-card {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(139, 92, 246, 0.1));
+            border-color: rgba(168, 85, 247, 0.2);
+        }
+        
+        body.dark-mode .activity-card:hover {
+            box-shadow: 0 15px 40px rgba(168, 85, 247, 0.3);
+            border-color: rgba(168, 85, 247, 0.4);
+        }
+        
+        body.dark-mode .activity-content h4,
+        body.dark-mode .timeline-content h4 {
+            color: #f1f5f9;
+        }
+        
+        body.dark-mode .activity-content p,
+        body.dark-mode .timeline-content p,
+        body.dark-mode .expansion-subtitle {
+            color: #cbd5e1;
+        }
+        
+        body.dark-mode .timeline-content {
+            background: rgba(15, 23, 42, 0.8);
+            border-color: rgba(148, 163, 184, 0.2);
+        }
+        
+        body.dark-mode .expansion-timeline::before {
+            background: linear-gradient(to bottom, #a855f7, #8b5cf6);
+        }
+        
+        body.dark-mode .timeline-marker.current {
+            background: linear-gradient(135deg, #a855f7, #8b5cf6);
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+        }
+        
+        @media (max-width: 768px) {
+            .expansion-timeline::before {
+                left: 20px;
+            }
+            
+            .timeline-item {
+                flex-direction: row !important;
+                padding-left: 50px;
+            }
+            
+            .timeline-marker {
+                left: 20px;
+            }
+            
+            .timeline-content {
+                width: 100%;
+            }
+            
+            .activity-grid {
+                grid-template-columns: 1fr;
+            }
+        }
 
         .hero-section {
             background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
@@ -1315,22 +2340,41 @@
             <div class="header-container">
                 <div class="header-left">
             <div class="logo">
-                <div class="logo-icon">●</div>
-                        <span>GUIDEBOOK</span>
+                <div class="logo-icon">
+                    <svg width="32" height="32" viewBox="0 0 100 100">
+                        <defs>
+                            <linearGradient id="bookGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#4f46e5"/>
+                                <stop offset="100%" stop-color="#7c3aed"/>
+                            </linearGradient>
+                        </defs>
+                        <rect x="20" y="15" width="50" height="70" rx="3" fill="url(#bookGradient)"/>
+                        <rect x="25" y="20" width="40" height="3" rx="1.5" fill="white" opacity="0.9"/>
+                        <rect x="25" y="28" width="35" height="2" rx="1" fill="white" opacity="0.7"/>
+                        <rect x="25" y="34" width="30" height="2" rx="1" fill="white" opacity="0.7"/>
+                        <rect x="25" y="40" width="38" height="2" rx="1" fill="white" opacity="0.7"/>
+                        <rect x="25" y="46" width="32" height="2" rx="1" fill="white" opacity="0.7"/>
+                        <path d="M72 25 L85 25 C87 25, 89 27, 89 29 L89 71 C89 73, 87 75, 85 75 L72 75 Z" fill="#6366f1" opacity="0.8"/>
+                        <circle cx="77" cy="35" r="2" fill="white" opacity="0.9"/>
+                        <circle cx="82" cy="42" r="1.5" fill="white" opacity="0.8"/>
+                        <circle cx="79" cy="50" r="1.8" fill="white" opacity="0.8"/>
+                    </svg>
+                </div>
+                <span class="logo-text">Guidebook</span>
             </div>
                     <nav class="main-nav">
                         <a class="nav-item" onclick="showPage('home', event)">Home</a>
                         <a class="nav-item" onclick="showPage('guidance', event)">AI Guidance</a>
                         <a class="nav-item" onclick="showPage('share', event)">Share Experience</a>
+                        <a class="nav-item" onclick="showPage('profile', event)" id="profileNavItem" style="display: none;">Profile</a>
                         <a class="nav-item" onclick="showPage('opportunities', event)">Opportunities</a>
                         <a class="nav-item" onclick="showPage('about', event)">About</a>
                     </nav>
                 </div>
                 <div class="header-right">
                     <button id="themeToggle" class="action-btn btn-secondary" onclick="toggleTheme()">🌙</button>
-                    <div id="userProfile" style="display: none;">
-                        <span style="color: #4a5568; margin-right: 10px;">👤 <span id="userEmail"></span></span>
-                        <button class="action-btn btn-secondary" onclick="logout()">🚪 Logout</button>
+                    <div class="user-profile" id="userProfile" style="display: none;">
+                        <button class="btn btn-secondary" onclick="logout()">Logout</button>
                     </div>
                     <div id="loginButtons" style="display: flex; gap: 10px;">
                         <button class="action-btn btn-secondary" onclick="window.location.href='login.html'">Login</button>
@@ -1340,7 +2384,28 @@
             </div>
         </header>
 
-
+        <!-- College Navigation Bar -->
+        <div class="college-nav">
+            <div class="container">
+                <div class="college-buttons">
+                    <button class="college-btn active" onclick="showCollegeExperiences('nit')">
+                        <span class="college-name">NiT</span>
+                    </button>
+                    <button class="college-btn" onclick="showCollegeExperiences('nearby')">
+                        <span class="college-name">Nearby Universities</span>
+                    </button>
+                    <button class="college-btn" onclick="showCollegeExperiences('schools')">
+                        <span class="college-name">Schools</span>
+                    </button>
+                    <button class="college-btn" onclick="showCollegeExperiences('state')">
+                        <span class="college-name">State Level</span>
+                    </button>
+                    <button class="college-btn" onclick="showCollegeExperiences('national')">
+                        <span class="college-name">National & Global</span>
+                    </button>
+                </div>
+            </div>
+        </div>
 
         <div class="content">
             <!-- Home Page -->
@@ -1360,25 +2425,6 @@
                                 </button>
                             </div>
                             <p style="font-size: 0.9rem; color: rgba(255,255,255,0.7);">Join the community of students helping each other grow.</p>
-                        </div>
-                        <div class="hero-image">
-                            <div class="hero-image-placeholder">
-                                ●●
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Partner Section -->
-                <div style="background: #e8e8e8; padding: 40px 20px; text-align: center; border-radius: 20px; box-shadow: 8px 8px 16px #c8c8c8, -8px -8px 16px #ffffff;">
-                    <div style="max-width: 1200px; margin: 0 auto;">
-                        <h3 style="color: #475569; font-size: 1.2rem; margin-bottom: 20px;">Starting with NiT, Expanding to More</h3>
-                        <div style="display: flex; justify-content: center; align-items: center; gap: 40px; flex-wrap: wrap; opacity: 0.8;">
-                            <div style="font-size: 1.5rem; font-weight: 600; color: #374151;">NiT (Current)</div>
-                            <div style="font-size: 1.5rem; font-weight: 600; color: #374151;">Nearby Universities (Next)</div>
-                            <div style="font-size: 1.5rem; font-weight: 600; color: #374151;">Schools (Future)</div>
-                            <div style="font-size: 1.5rem; font-weight: 600; color: #374151;">State Level (Future)</div>
-                            <div style="font-size: 1.5rem; font-weight: 600; color: #374151;">National & Global (Future)</div>
                         </div>
                     </div>
                 </div>
@@ -1442,45 +2488,73 @@
                     </div>
                 </div>
 
-                                 <!-- Recent Activity -->
-                <div class="card">
-                     <h3 style="margin-bottom: 20px;">Recent Activity</h3>
-                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px;">
-                         <div style="background: #e8e8e8; padding: 20px; border-radius: 15px; box-shadow: inset 4px 4px 8px #c8c8c8, inset -4px -4px 8px #ffffff;">
-                             <div style="font-weight: 600; color: #1a202c; margin-bottom: 8px;">Platform Ready</div>
-                             <div style="font-size: 0.9rem; color: #475569;">Ready to collect and share student experiences</div>
+                <!-- Recent Activity -->
+                <div class="activity-section">
+                    <h3 class="section-title">🚀 Recent Activity</h3>
+                    <div class="activity-grid">
+                        <div class="activity-card platform-ready">
+                            <div class="activity-icon"></div>
+                            <div class="activity-content">
+                                <h4>Platform Ready</h4>
+                                <p>Ready to collect and share student experiences</p>
+                                <div class="activity-status active">Active</div>
+                            </div>
+                        </div>
+                        <div class="activity-card ai-ready">
+                            <div class="activity-icon"></div>
+                            <div class="activity-content">
+                                <h4>AI Guidance Ready</h4>
+                                <p>AI system ready to process experiences</p>
+                                <div class="activity-status active">Active</div>
+                            </div>
+                        </div>
+                        <div class="activity-card opportunities">
+                            <div class="activity-icon"></div>
+                            <div class="activity-content">
+                                <h4>Real Opportunities</h4>
+                                <p>Live job and internship opportunities available</p>
+                                <div class="activity-status active">Live</div>
+                            </div>
+                        </div>
                     </div>
-                         <div style="background: #e8e8e8; padding: 20px; border-radius: 15px; box-shadow: inset 4px 4px 8px #c8c8c8, inset -4px -4px 8px #ffffff;">
-                             <div style="font-weight: 600; color: #1a202c; margin-bottom: 8px;">AI Guidance Ready</div>
-                             <div style="font-size: 0.8rem; color: #475569;">AI system ready to process experiences</div>
-                         </div>
-                         <div style="background: #e8e8e8; padding: 20px; border-radius: 15px; box-shadow: inset 4px 4px 8px #c8c8c8, inset -4px -4px 8px #ffffff;">
-                             <div style="font-weight: 600; color: #1a202c; margin-bottom: 8px;">Real Opportunities</div>
-                             <div style="font-size: 0.9rem; color: #475569;">Live job and internship opportunities available</div>
-                         </div>
-                     </div>
-                 </div>
+                </div>
 
-                <!-- Expansion Plans -->
-                <div class="card">
-                    <h3 style="margin-bottom: 20px;">Future Expansion Plans</h3>
-                    <p style="margin-bottom: 20px; color: #4a5568;">Currently starting with <strong>NiT</strong>, we plan to expand our platform to serve more students:</p>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
-                        <div style="background: #e8e8e8; padding: 20px; border-radius: 15px; text-align: center; box-shadow: inset 4px 4px 8px #c8c8c8, inset -4px -4px 8px #ffffff;">
-                            <div style="font-size: 2rem; margin-bottom: 8px;">●</div>
-                            <div style="font-weight: 600; color: #1a202c;">Nearby Universities</div>
+                <!-- Future Expansion Plans -->
+                <div class="expansion-section">
+                    <h3 class="section-title">🌟 Future Expansion Plans</h3>
+                    <p class="expansion-subtitle">Currently starting with NiT, we plan to expand our platform to serve more students:</p>
+                    <div class="expansion-timeline">
+                        <div class="timeline-item active">
+                            <div class="timeline-marker current"></div>
+                            <div class="timeline-content">
+                                <h4>NiT Campus</h4>
+                                <p>Building foundation with our home college</p>
+                                <span class="timeline-status current">Current Phase</span>
+                            </div>
                         </div>
-                        <div style="background: #e8e8e8; padding: 20px; border-radius: 15px; text-align: center; box-shadow: inset 4px 4px 8px #c8c8c8, inset -4px -4px 8px #ffffff;">
-                            <div style="font-size: 2rem; margin-bottom: 8px;">●</div>
-                            <div style="font-weight: 600; color: #1a202c;">Schools</div>
+                        <div class="timeline-item">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <h4>Nearby Universities</h4>
+                                <p>Expanding to partner institutions in the region</p>
+                                <span class="timeline-status">Phase 2</span>
+                            </div>
                         </div>
-                        <div style="background: #e8e8e8; padding: 20px; border-radius: 15px; text-align: center; box-shadow: inset 4px 4px 8px #c8c8c8, inset -4px -4px 8px #ffffff;">
-                            <div style="font-size: 2rem; margin-bottom: 8px;">●</div>
-                            <div style="font-weight: 600; color: #1a202c;">State Level</div>
+                        <div class="timeline-item">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <h4>Schools & State Level</h4>
+                                <p>Including school-level guidance and state-wise expansion</p>
+                                <span class="timeline-status">Phase 3</span>
+                            </div>
                         </div>
-                        <div style="background: #e8e8e8; padding: 20px; border-radius: 15px; text-align: center; box-shadow: inset 4px 4px 8px #c8c8c8, inset -4px -4px 8px #ffffff;">
-                            <div style="font-size: 2rem; margin-bottom: 8px;">●</div>
-                            <div style="font-weight: 600; color: #1a202c;">National & Global</div>
+                        <div class="timeline-item">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <h4>National & Global</h4>
+                                <p>Reaching students across the country and beyond</p>
+                                <span class="timeline-status">Phase 4</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1577,6 +2651,15 @@
                             <option value="mistake">Mistakes & Lessons</option>
                         </select>
                     </div>
+                    
+                    <div class="form-group">
+                        <label>College (Optional)</label>
+                        <select id="experienceCollege">
+                            <option value="">Select college (optional)</option>
+                            <option value="nit">NiT</option>
+                        </select>
+                        <small style="color: #666; font-size: 0.9rem;">Choose NiT to share on the NiT page, or leave blank for general sharing</small>
+                    </div>
 
                     <div class="form-group">
                         <label>Experience Title</label>
@@ -1609,7 +2692,7 @@
 
             <!-- Opportunities Wall -->
             <div id="opportunities" class="page">
-                <h2>Opportunities Wall 💼</h2>
+                <h2>Opportunities Wall</h2>
                 
                 <div class="card">
                      <h3>Real-Time Opportunity Detection</h3>
@@ -1638,6 +2721,224 @@
                  <div id="noOpportunities" class="card" style="text-align: center; padding: 40px; display: none;">
                      <h3>No opportunities found</h3>
                      <p>Try refreshing or changing the filter criteria.</p>
+                </div>
+            </div>
+
+            <!-- Profile Page -->
+            <div id="profile" class="page">
+                <div class="profile-container">
+                    <div class="profile-sidebar">
+                        <div class="profile-card">
+                            <div class="profile-avatar" id="profileAvatar">A</div>
+                            <h3 id="profileName">User Name</h3>
+                            <p id="profileEmail">user@example.com</p>
+                            <div class="profile-stats">
+                                <div class="stat-item">
+                                    <span class="stat-number" id="profileExperiences">0</span>
+                                    <span class="stat-label">Experiences</span>
+                                </div>
+                            </div>
+                            <p class="member-since" id="memberSince">Member since August 2025</p>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-main">
+                        <div class="profile-tabs">
+                            <button class="tab-btn active" onclick="showProfileTab('overview')">Overview</button>
+                            <button class="tab-btn" onclick="showProfileTab('edit')">Edit Profile</button>
+                            <button class="tab-btn" onclick="showProfileTab('experiences')">My Experiences</button>
+                            <button class="tab-btn" onclick="showProfileTab('share')">Share Experience</button>
+                        </div>
+                        
+                        <!-- Overview Tab -->
+                        <div class="tab-content active" id="overviewTab">
+                            <div class="profile-section">
+                                <h3>About Me</h3>
+                                <p id="profileBio" class="profile-bio">No bio added yet. Click 'Edit Profile' to add your bio.</p>
+                            </div>
+                            
+                            <div class="profile-section">
+                                <h3>Education</h3>
+                                <div id="profileEducation" class="education-list">
+                                    <p class="empty-state">No education information added yet.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="profile-section">
+                                <h3>Skills & Interests</h3>
+                                <div id="profileSkills" class="skills-list">
+                                    <p class="empty-state">No skills added yet.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="profile-section">
+                                <h3>Achievements</h3>
+                                <div id="profileAchievements" class="achievements-list">
+                                    <p class="empty-state">No achievements added yet.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Edit Profile Tab -->
+                        <div class="tab-content" id="editTab">
+                            <form id="profileEditForm" class="profile-edit-form">
+                                <div class="form-group">
+                                    <label for="editBio">Bio</label>
+                                    <textarea id="editBio" placeholder="Tell us about yourself..." rows="4"></textarea>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="editUniversity">University/College</label>
+                                    <input type="text" id="editUniversity" placeholder="Your institution name">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="editDegree">Degree/Program</label>
+                                    <input type="text" id="editDegree" placeholder="e.g., Computer Science, MBA">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="editYear">Year of Study</label>
+                                    <select id="editYear">
+                                        <option value="">Select Year</option>
+                                        <option value="1st Year">1st Year</option>
+                                        <option value="2nd Year">2nd Year</option>
+                                        <option value="3rd Year">3rd Year</option>
+                                        <option value="4th Year">4th Year</option>
+                                        <option value="Graduate">Graduate</option>
+                                        <option value="Postgraduate">Postgraduate</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="editSkills">Skills (comma separated)</label>
+                                    <input type="text" id="editSkills" placeholder="e.g., JavaScript, Python, Machine Learning">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="editInterests">Interests (comma separated)</label>
+                                    <input type="text" id="editInterests" placeholder="e.g., Web Development, Data Science, Entrepreneurship">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="editLocation">Location</label>
+                                    <input type="text" id="editLocation" placeholder="City, Country">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="editLinkedIn">LinkedIn Profile</label>
+                                    <input type="url" id="editLinkedIn" placeholder="https://linkedin.com/in/yourprofile">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="editGitHub">GitHub Profile</label>
+                                    <input type="url" id="editGitHub" placeholder="https://github.com/yourusername">
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                            </form>
+                        </div>
+                        
+                        <!-- My Experiences Tab -->
+                        <div class="tab-content" id="experiencesTab">
+                            <div id="userExperiencesList" class="experiences-list">
+                                <p class="empty-state">No experiences shared yet. Share your first experience!</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Share Experience Tab -->
+                        <div class="tab-content" id="shareTab">
+                            <form id="shareExperienceForm" class="share-form">
+                                <div class="form-group">
+                                    <label for="experienceTitle">Title</label>
+                                    <input type="text" id="experienceTitle" placeholder="Enter experience title" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="experienceContent">Your Experience</label>
+                                    <textarea id="experienceContent" placeholder="Share your experience, tips, or advice..." rows="6" required></textarea>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="experienceCategory">Category</label>
+                                    <select id="experienceCategory">
+                                        <option value="Academic">Academic</option>
+                                        <option value="Career">Career</option>
+                                        <option value="Internship">Internship</option>
+                                        <option value="Project">Project</option>
+                                        <option value="Life Skills">Life Skills</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary">Share Experience</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NiT Experiences Page -->
+            <div id="nit" class="page">
+                <h2>NiT Experiences 🎓</h2>
+                
+                <div class="card">
+                    <h3>NiT Student Experiences</h3>
+                    <p>Discover valuable experiences shared by NiT students. These insights have been contributed by seniors to help guide junior students through their academic journey.</p>
+                </div>
+
+                <div class="experience-form">
+                    <h3>Share Your NiT Experience</h3>
+                    <div class="form-group">
+                        <label>Your Year/Semester</label>
+                        <select id="nitStudentYear">
+                            <option value="">Select your current year</option>
+                            <option value="2nd">2nd Year</option>
+                            <option value="3rd">3rd Year</option>
+                            <option value="4th">4th Year</option>
+                            <option value="graduate">Graduate/Alumni</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select id="nitExperienceCategory">
+                            <option value="">Select category</option>
+                            <option value="academic">Academic Experience</option>
+                            <option value="placement">Placement/Interview Experience</option>
+                            <option value="internship">Internship Experience</option>
+                            <option value="project">Project Experience</option>
+                            <option value="campus">Campus Life</option>
+                            <option value="mistake">Mistakes & Lessons</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Experience Title</label>
+                        <input type="text" id="nitExperienceTitle" placeholder="Brief title for your NiT experience">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Detailed Experience</label>
+                        <textarea id="nitExperienceDetails" rows="8" placeholder="Share your detailed NiT experience, challenges faced, solutions found, tips, and advice you'd give to junior NiT students..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Key Takeaways</label>
+                        <textarea id="nitKeyTakeaways" rows="4" placeholder="What are the main points junior NiT students should remember from your experience?"></textarea>
+                    </div>
+
+                    <button class="btn" onclick="submitNiTExperience()">📤 Share NiT Experience</button>
+                </div>
+
+                <div class="card">
+                    <h3>NiT Experiences Shared</h3>
+                    <div id="nitExperiences">
+                         <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 10px 0; text-align: center; color: #666;">
+                             <p>No NiT experiences shared yet. Be the first to share your valuable NiT experience!</p>
+                             <p style="font-size: 0.9rem; margin-top: 10px;">Your experience will help junior NiT students and generate AI guidance for the community.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -2024,84 +3325,66 @@
             const isDark = document.body.classList.toggle('dark-mode');
             localStorage.setItem('gb:dark', isDark ? '1' : '0');
             const btn = document.getElementById('themeToggle');
-            if (btn) btn.textContent = isDark ? '☀️ Light Mode' : '🌙 Dark Mode';
+            if (btn) {
+                btn.textContent = isDark ? '☀️' : '🌙';
+            }
         }
 
-        // Experience Sharing
         function submitExperience() {
-            const year = document.getElementById('studentYear').value;
             const category = document.getElementById('experienceCategory').value;
             const title = document.getElementById('experienceTitle').value;
             const details = document.getElementById('experienceDetails').value;
             const takeaways = document.getElementById('keyTakeaways').value;
+            const year = document.getElementById('studentYear').value;
+            const college = document.getElementById('experienceCollege').value;
             
-            if (!year || !category || !title.trim() || !details.trim() || !takeaways.trim()) {
-                alert('Please fill in all fields to share your experience.');
+            if (!category || !title || !details || !takeaways || !year) {
+                showToast('Please fill in all required fields', 'error');
                 return;
             }
             
-            // Add to experiences array
-            const newExperience = {
-                title: title,
-                category: category,
-                year: year,
-                content: details,
-                guidance: takeaways,
-                timestamp: new Date(),
-                id: Date.now() // Unique identifier
+            const experience = {
+                id: Date.now(),
+                category,
+                title,
+                details,
+                takeaways,
+                year,
+                college: college || '', // Optional college selection
+                timestamp: new Date().toISOString(),
+                author: localStorage.getItem('gb:userName') || 'Anonymous'
             };
             
-            experiences.push(newExperience);
+            // Save to localStorage
+            const experiences = JSON.parse(localStorage.getItem('gb:experiences') || '[]');
+            experiences.unshift(experience);
+            localStorage.setItem('gb:experiences', JSON.stringify(experiences));
             
-            // Track active user
-            const userEmail = localStorage.getItem('gb:userEmail') || 'anonymous';
-            activeUsers.add(userEmail);
-            
-            // Save data and update display
-            saveData();
-            updateStatsDisplay();
-            updateRecentExperiences();
+            // Update experience count
+            const currentCount = parseInt(localStorage.getItem('gb:experienceCount') || '0');
+            localStorage.setItem('gb:experienceCount', (currentCount + 1).toString());
+            updateExperienceCount();
             
             // Clear form
-            document.getElementById('studentYear').value = '';
             document.getElementById('experienceCategory').value = '';
             document.getElementById('experienceTitle').value = '';
             document.getElementById('experienceDetails').value = '';
             document.getElementById('keyTakeaways').value = '';
+            document.getElementById('studentYear').value = '';
+            document.getElementById('experienceCollege').value = '';
             
-            // Show success message
-            showToast('Experience submitted. Thank you!', 'success');
+            // Show success message with college info
+            const collegeMsg = college ? ` for ${college.toUpperCase()}` : '';
+            showToast(`Experience shared successfully${collegeMsg}! 🎉`, 'success');
+            
+            // Refresh recent experiences display
+            loadRecentExperiences();
+            
+            // If current filter matches the submitted experience, refresh the filtered view
+            if (currentCollegeFilter === college || (currentCollegeFilter === 'all' && !college)) {
+                filterExperiencesByCollege(currentCollegeFilter);
+            }
         }
-
-        function updateRecentExperiences() {
-            const recentDiv = document.getElementById('recentExperiences');
-            const recentExperiences = experiences.slice(-5).reverse();
-            
-            recentDiv.innerHTML = '';
-             
-             if (recentExperiences.length === 0) {
-                 const noExpDiv = document.createElement('div');
-                 noExpDiv.style.cssText = 'background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 10px 0; text-align: center; color: #666;';
-                 noExpDiv.innerHTML = `
-                     <p>No experiences shared yet. Be the first to share your valuable experience!</p>
-                     <p style="font-size: 0.9rem; margin-top: 10px;">Your experience will help junior students and generate AI guidance for the community.</p>
-                 `;
-                 recentDiv.appendChild(noExpDiv);
-             } else {
-            recentExperiences.forEach((exp, index) => {
-                const expDiv = document.createElement('div');
-                expDiv.style.cssText = 'background: #f8f9fa; padding: 15px; border-radius: 10px; margin: 10px 0;';
-                expDiv.innerHTML = `
-                    <strong>🎓 "${exp.title}"</strong> - ${exp.year} Year ${exp.category.toUpperCase()}<br>
-                    <small style="color: #666;">Shared ${index === 0 ? 'just now' : (index + 1) + ' experiences ago'} • Will generate guidance sessions</small>
-                `;
-                recentDiv.appendChild(expDiv);
-            });
-             }
-             
-             // Update stats
-             updateStats();
-         }
          
          function updateStats() {
              const experienceCountEl = document.getElementById('experienceCount');
@@ -2128,54 +3411,502 @@
              
              // Fetch real opportunities
              fetchOpportunities();
-             
-            // Add some demo interactions
-            console.log('Guidebook platform initialized');
-            
-            // Restore theme
-            const dark = localStorage.getItem('gb:dark') === '1';
-            if (dark) { document.body.classList.add('dark-mode'); }
-            const themeBtn = document.getElementById('themeToggle');
-            if (themeBtn) themeBtn.textContent = dark ? '☀️ Light Mode' : '🌙 Dark Mode';
-
-            // Restore college
-            const savedCollege = localStorage.getItem('gb:college');
-            if (savedCollege) {
-                currentCollege = savedCollege;
-                const btns = document.querySelectorAll('.college-btn');
-                btns.forEach(b => b.classList.remove('active'));
-                const activeBtn = Array.from(btns).find(b => b.textContent.includes('NiT'));
-                if (activeBtn && savedCollege === 'nit') activeBtn.classList.add('active');
+        });
+        
+        // Profile Management Functions
+        function showPage(pageId, event) {
+            if (event) {
+                event.preventDefault();
             }
-
-            // Restore last page
-            const last = localStorage.getItem('gb:lastPage');
-            if (last && last !== 'home') { showPage(last); }
-            else { updateNavigation('home'); }
             
-            // Add click animations to cards
-            const cards = document.querySelectorAll('.card, .opportunity-card');
-            cards.forEach(card => {
-                card.addEventListener('click', function() {
-                    this.style.transform = 'scale(1.02)';
-                    setTimeout(() => {
-                        this.style.transform = '';
-                    }, 200);
-                });
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
             });
             
-            // Add floating animation to AI features
-            const aiFeatures = document.querySelectorAll('.ai-feature');
-            aiFeatures.forEach(feature => {
-                feature.addEventListener('mouseenter', function() {
-                    this.style.animation = 'none';
-                    this.style.transform = 'translateY(-10px)';
-                });
+            // Show selected page
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+            }
+            
+            // Update navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
+            
+            // Handle college navigation visibility
+            const collegeNav = document.querySelector('.college-nav');
+            const content = document.querySelector('.content');
+            
+            if (pageId === 'home') {
+                // Show college navigation on home page
+                collegeNav.classList.remove('hidden');
+                content.classList.remove('no-college-nav');
+            } else {
+                // Hide college navigation on other pages
+                collegeNav.classList.add('hidden');
+                content.classList.add('no-college-nav');
+            }
+            
+            // Load page-specific content
+            if (pageId === 'share') {
+                loadRecentExperiences();
+            } else if (pageId === 'profile') {
+                loadProfileData();
+                loadProfileOverview();
+            } else if (pageId === 'opportunities') {
+                fetchOpportunities();
+            } else if (pageId === 'nit') {
+                loadNiTExperiences();
+            }
+        }
+        
+        function loadProfileData() {
+            const userEmail = localStorage.getItem('gb:userEmail');
+            const userName = localStorage.getItem('gb:userName');
+            const userProfile = JSON.parse(localStorage.getItem('gb:userProfile') || '{}');
+            const experiences = JSON.parse(localStorage.getItem('gb:experiences') || '[]');
+            const userExperiences = experiences.filter(exp => exp.authorEmail === userEmail);
+            
+            if (userName) {
+                const profileNameEl = document.getElementById('profileName');
+                const profileEmailEl = document.getElementById('profileEmail');
+                const profileAvatarEl = document.getElementById('profileAvatar');
+                const profileExperiencesEl = document.getElementById('profileExperiences');
+                const memberSinceEl = document.getElementById('memberSince');
                 
-                feature.addEventListener('mouseleave', function() {
-                    this.style.transform = '';
+                if (profileNameEl) profileNameEl.textContent = userName;
+                if (profileEmailEl) profileEmailEl.textContent = userEmail;
+                if (profileAvatarEl) profileAvatarEl.textContent = userName.charAt(0).toUpperCase();
+                
+                // Update stats with proper calculations
+                if (profileExperiencesEl) profileExperiencesEl.textContent = userExperiences.length;
+                
+                // Update member since
+                if (memberSinceEl) {
+                    const joinDate = userProfile.joinDate || new Date().toISOString();
+                    const date = new Date(joinDate);
+                    memberSinceEl.textContent = `Member since ${date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}`;
+                }
+            }
+        }
+        
+        function loadProfileOverview() {
+            const userProfile = JSON.parse(localStorage.getItem('gb:userProfile') || '{}');
+            
+            // Load bio
+            const bioElement = document.getElementById('profileBio');
+            if (bioElement) {
+                if (userProfile.bio) {
+                    bioElement.textContent = userProfile.bio;
+                    bioElement.classList.remove('empty-state');
+                } else {
+                    bioElement.textContent = "No bio added yet. Click 'Edit Profile' to add your bio.";
+                    bioElement.classList.add('empty-state');
+                }
+            }
+            
+            // Load education
+            const educationElement = document.getElementById('profileEducation');
+            if (educationElement) {
+                if (userProfile.university || userProfile.degree) {
+                    educationElement.innerHTML = `
+                        <div class="education-item">
+                            ${userProfile.degree || 'Degree'} at ${userProfile.university || 'University'}
+                            ${userProfile.year ? ` • ${userProfile.year}` : ''}
+                        </div>
+                    `;
+                } else {
+                    educationElement.innerHTML = '<p class="empty-state">No education information added yet.</p>';
+                }
+            }
+            
+            // Load skills
+            const skillsElement = document.getElementById('profileSkills');
+            if (skillsElement) {
+                if (userProfile.skills && userProfile.skills.length > 0) {
+                    skillsElement.innerHTML = userProfile.skills.map(skill => 
+                        `<span class="skill-tag">${skill.trim()}</span>`
+                    ).join('');
+                } else {
+                    skillsElement.innerHTML = '<p class="empty-state">No skills added yet.</p>';
+                }
+            }
+            
+            // Load achievements
+            const achievementsElement = document.getElementById('profileAchievements');
+            if (achievementsElement) {
+                const experiences = JSON.parse(localStorage.getItem('gb:experiences') || '[]');
+                const userEmail = localStorage.getItem('gb:userEmail');
+                const userExperiences = experiences.filter(exp => exp.authorEmail === userEmail);
+                
+                if (userExperiences.length > 0) {
+                    const achievements = [];
+                    if (userExperiences.length >= 1) achievements.push('First Experience Shared');
+                    if (userExperiences.length >= 5) achievements.push('Active Contributor');
+                    if (userExperiences.length >= 10) achievements.push('Experience Master');
+                    
+                    const totalViews = userExperiences.reduce((sum, exp) => sum + (exp.views || 0), 0);
+                    if (totalViews >= 50) achievements.push('Popular Content Creator');
+                    
+                    if (achievements.length > 0) {
+                        achievementsElement.innerHTML = achievements.map(achievement => 
+                            `<span class="achievement-item">${achievement}</span>`
+                        ).join('');
+                    } else {
+                        achievementsElement.innerHTML = '<p class="empty-state">Share experiences to unlock achievements!</p>';
+                    }
+                } else {
+                    achievementsElement.innerHTML = '<p class="empty-state">Share experiences to unlock achievements!</p>';
+                }
+            }
+        }
+        
+        function loadProfileEditForm() {
+            const userProfile = JSON.parse(localStorage.getItem('gb:userProfile') || '{}');
+            
+            // Populate form fields with null checks
+            const editBio = document.getElementById('editBio');
+            const editUniversity = document.getElementById('editUniversity');
+            const editDegree = document.getElementById('editDegree');
+            const editYear = document.getElementById('editYear');
+            const editSkills = document.getElementById('editSkills');
+            const editInterests = document.getElementById('editInterests');
+            const editLocation = document.getElementById('editLocation');
+            const editLinkedIn = document.getElementById('editLinkedIn');
+            const editGitHub = document.getElementById('editGitHub');
+            
+            if (editBio) editBio.value = userProfile.bio || '';
+            if (editUniversity) editUniversity.value = userProfile.university || '';
+            if (editDegree) editDegree.value = userProfile.degree || '';
+            if (editYear) editYear.value = userProfile.year || '';
+            if (editSkills) editSkills.value = userProfile.skills ? userProfile.skills.join(', ') : '';
+            if (editInterests) editInterests.value = userProfile.interests ? userProfile.interests.join(', ') : '';
+            if (editLocation) editLocation.value = userProfile.location || '';
+            if (editLinkedIn) editLinkedIn.value = userProfile.linkedin || '';
+            if (editGitHub) editGitHub.value = userProfile.github || '';
+        }
+        
+        function loadUserExperiences() {
+            const userEmail = localStorage.getItem('gb:userEmail');
+            const experiences = JSON.parse(localStorage.getItem('gb:experiences') || '[]');
+            const userExperiences = experiences.filter(exp => exp.authorEmail === userEmail);
+            
+            const listElement = document.getElementById('userExperiencesList');
+            if (!listElement) return;
+            
+            if (userExperiences.length === 0) {
+                listElement.innerHTML = '<p class="empty-state">No experiences shared yet. Share your first experience!</p>';
+                return;
+            }
+            
+            listElement.innerHTML = userExperiences.map(exp => {
+                const date = new Date(exp.date);
+                return `
+                    <div class="user-experience-card">
+                        <h4>${exp.title}</h4>
+                        <p>${exp.content.length > 200 ? exp.content.substring(0, 200) + '...' : exp.content}</p>
+                        <div class="experience-meta">
+                            <span>Category: ${exp.category || 'General'} • ${date.toLocaleDateString()} • ${exp.views || 0} views</span>
+                            <button class="delete-btn" onclick="deleteExperience('${exp.id}')">Delete</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function deleteExperience(experienceId) {
+            if (!confirm('Are you sure you want to delete this experience?')) {
+                return;
+            }
+            
+            const experiences = JSON.parse(localStorage.getItem('gb:experiences') || '[]');
+            const updatedExperiences = experiences.filter(exp => exp.id !== experienceId);
+            localStorage.setItem('gb:experiences', JSON.stringify(updatedExperiences));
+            
+            // Reload experiences list
+            loadUserExperiences();
+            loadSharedExperiences(); // Update home page
+            loadProfileData(); // Update stats
+        }
+        
+        // Toast notification function
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.textContent = message;
+            
+            // Toast styles
+            toast.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};
+                color: white;
+                padding: 12px 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+                z-index: 10000;
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+            `;
+            
+            document.body.appendChild(toast);
+            
+            // Animate in
+            setTimeout(() => {
+                toast.style.transform = 'translateX(0)';
+            }, 100);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                toast.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 300);
+            }, 3000);
+        }
+        
+        // Initialize profile forms when page loads
+        function initializeProfileForms() {
+            // Profile edit form
+            const profileEditForm = document.getElementById('profileEditForm');
+            if (profileEditForm) {
+                profileEditForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const editBio = document.getElementById('editBio');
+                    const editUniversity = document.getElementById('editUniversity');
+                    const editDegree = document.getElementById('editDegree');
+                    const editYear = document.getElementById('editYear');
+                    const editSkills = document.getElementById('editSkills');
+                    const editInterests = document.getElementById('editInterests');
+                    const editLocation = document.getElementById('editLocation');
+                    const editLinkedIn = document.getElementById('editLinkedIn');
+                    const editGitHub = document.getElementById('editGitHub');
+                    
+                    const userProfile = {
+                        bio: editBio ? editBio.value : '',
+                        university: editUniversity ? editUniversity.value : '',
+                        degree: editDegree ? editDegree.value : '',
+                        year: editYear ? editYear.value : '',
+                        skills: editSkills ? editSkills.value.split(',').map(s => s.trim()).filter(s => s) : [],
+                        interests: editInterests ? editInterests.value.split(',').map(s => s.trim()).filter(s => s) : [],
+                        location: editLocation ? editLocation.value : '',
+                        linkedin: editLinkedIn ? editLinkedIn.value : '',
+                        github: editGitHub ? editGitHub.value : '',
+                        joinDate: JSON.parse(localStorage.getItem('gb:userProfile') || '{}').joinDate || new Date().toISOString()
+                    };
+                    
+                    localStorage.setItem('gb:userProfile', JSON.stringify(userProfile));
+                    
+                    // Show success message
+                    showToast('Profile updated successfully!', 'success');
+                    
+                    // Switch to overview tab and reload data
+                    loadProfileData();
+                    loadProfileOverview();
+                    
+                    // Switch to overview tab
+                    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+                    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+                    document.getElementById('overviewTab').classList.add('active');
+                    document.querySelector('.tab-btn').classList.add('active');
                 });
+            }
+            
+            // Share experience form
+            const shareExperienceForm = document.getElementById('shareExperienceForm');
+            if (shareExperienceForm) {
+                shareExperienceForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const userEmail = localStorage.getItem('gb:userEmail');
+                    const userName = localStorage.getItem('gb:userName');
+                    
+                    if (!userEmail) {
+                        showToast('Please log in to share experiences', 'error');
+                        return;
+                    }
+                    
+                    const titleEl = document.getElementById('experienceTitle');
+                    const contentEl = document.getElementById('experienceContent');
+                    const categoryEl = document.getElementById('experienceCategory');
+                    
+                    if (!titleEl || !contentEl || !titleEl.value.trim() || !contentEl.value.trim()) {
+                        showToast('Please fill in all required fields', 'error');
+                        return;
+                    }
+                    
+                    const experience = {
+                        id: 'exp_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+                        title: titleEl.value.trim(),
+                        content: contentEl.value.trim(),
+                        category: categoryEl ? categoryEl.value : 'General',
+                        authorName: userName,
+                        authorEmail: userEmail,
+                        date: new Date().toISOString(),
+                        views: 0
+                    };
+                    
+                    const experiences = JSON.parse(localStorage.getItem('gb:experiences') || '[]');
+                    experiences.unshift(experience); // Add to beginning
+                    localStorage.setItem('gb:experiences', JSON.stringify(experiences));
+                    
+                    // Update user reputation
+                    const userProfile = JSON.parse(localStorage.getItem('gb:userProfile') || '{}');
+                    userProfile.reputation = (userProfile.reputation || 0) + 10;
+                    localStorage.setItem('gb:userProfile', JSON.stringify(userProfile));
+                    
+                    // Clear form
+                    shareExperienceForm.reset();
+                    
+                    // Show success message
+                    showToast('Experience shared successfully!', 'success');
+                    
+                    // Reload data
+                    loadUserExperiences();
+                    loadSharedExperiences();
+                    loadProfileData();
+                    loadProfileOverview();
+                });
+            }
+        }
+        
+        // College Navigation Functions
+        function selectCollegeNav(college) {
+            // Update active button
+            document.querySelectorAll('.college-nav-btn').forEach(btn => {
+                btn.classList.remove('active');
             });
+            event.target.classList.add('active');
+            
+            // Handle college selection
+            if (college === 'nit') {
+                // Show NiT experiences
+                showCollegeExperiences('nit');
+                showToast('Showing NiT experiences', 'success');
+            } else {
+                // Show coming soon for other colleges
+                showToast('Coming soon! This college will be available in future updates.', 'info');
+            }
+        }
+        
+        function showCollegeExperiences(college) {
+            const collegeExperiences = experiences.filter(exp => exp.college === college);
+            
+            if (collegeExperiences.length === 0) {
+                showToast('No experiences shared for this college yet. Be the first to share!', 'info');
+                return;
+            }
+            
+            // Create a modal or section to show college-specific experiences
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.8);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 10000;
+            `;
+            
+            const content = document.createElement('div');
+            content.style.cssText = `
+                background: white;
+                padding: 30px;
+                border-radius: 20px;
+                max-width: 800px;
+                max-height: 80vh;
+                overflow-y: auto;
+                position: relative;
+            `;
+            
+            if (document.body.classList.contains('dark-mode')) {
+                content.style.background = 'rgba(30, 41, 59, 0.95)';
+                content.style.color = '#f1f5f9';
+                content.style.border = '1px solid rgba(148, 163, 184, 0.2)';
+            }
+            
+            content.innerHTML = `
+                <button onclick="this.parentElement.parentElement.remove()" style="
+                    position: absolute;
+                    top: 15px;
+                    right: 20px;
+                    background: none;
+                    border: none;
+                    font-size: 24px;
+                    cursor: pointer;
+                    color: inherit;
+                ">×</button>
+                <h2>NiT Experiences (${collegeExperiences.length})</h2>
+                <div style="margin-top: 20px;">
+                    ${collegeExperiences.map(exp => `
+                        <div style="
+                            background: rgba(248, 250, 252, 0.8);
+                            padding: 20px;
+                            border-radius: 12px;
+                            margin-bottom: 15px;
+                            border-left: 4px solid #4f46e5;
+                        ">
+                            <h4>${exp.title}</h4>
+                            <p style="color: #64748b; margin: 10px 0;">${exp.category} • ${exp.year} Year</p>
+                            <p>${exp.content.length > 200 ? exp.content.substring(0, 200) + '...' : exp.content}</p>
+                            <p style="margin-top: 15px; font-weight: 600; color: #4f46e5;">Key Takeaways:</p>
+                            <p>${exp.guidance}</p>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            modal.appendChild(content);
+            document.body.appendChild(modal);
+            
+            // Close on background click
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.remove();
+                }
+            });
+        }
+        
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            checkLoginStatus();
+            showPage('home');
+            loadSharedExperiences();
+            
+            // Initialize theme
+            const savedTheme = localStorage.getItem('gb:theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+                const themeToggle = document.getElementById('themeToggle');
+                if (themeToggle) {
+                    themeToggle.textContent = '☀️';
+                }
+            }
+            
+            // Load profile data if logged in
+            const isLoggedIn = localStorage.getItem('gb:loggedIn') === 'true';
+            if (isLoggedIn) {
+                loadProfileData();
+                // Initialize profile forms after a short delay to ensure DOM is ready
+                setTimeout(initializeProfileForms, 100);
+            }
+            
+            // Initialize profile forms for when user logs in later
+            initializeProfileForms();
         });
 
                  // Real opportunities data and functions
@@ -2471,26 +4202,245 @@
              }
          }, 300000);
 
-                 // Login/Logout functions
-         function checkLoginStatus() {
-             const isLoggedIn = localStorage.getItem('gb:loggedIn') === 'true';
-             const userEmail = localStorage.getItem('gb:userEmail');
-             
-             if (isLoggedIn && userEmail) {
-                 document.getElementById('userProfile').style.display = 'block';
-                 document.getElementById('loginButtons').style.display = 'none';
-                 document.getElementById('userEmail').textContent = userEmail;
-             } else {
-                 document.getElementById('userProfile').style.display = 'none';
-                 document.getElementById('loginButtons').style.display = 'flex';
-             }
-         }
+        // College experience filtering
+        let currentCollegeFilter = 'all';
+
+        function showCollegeExperiences(college) {
+            // Update active button
+            document.querySelectorAll('.college-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.closest('.college-btn').classList.add('active');
+            
+            const collegeNames = {
+                'nit': 'NiT',
+                'nearby': 'Nearby Universities',
+                'schools': 'Schools',
+                'state': 'State Level',
+                'national': 'National & Global'
+            };
+            
+            if (college === 'nit') {
+                // Open NiT experiences page
+                showPage('nit', event);
+                loadNiTExperiences();
+                showToast(`Welcome to ${collegeNames[college]} Experiences`, 'success');
+            } else {
+                showToast(`${collegeNames[college]} - Coming Soon!`, 'info');
+            }
+        }
+
+        function filterExperiencesByCollege(college) {
+            const experiences = JSON.parse(localStorage.getItem('gb:experiences') || '[]');
+            let filteredExperiences;
+            
+            if (college === 'all' || college === 'nit') {
+                // Show NiT experiences or all experiences
+                filteredExperiences = experiences.filter(exp => 
+                    college === 'all' ? true : exp.college === 'nit'
+                );
+            } else {
+                // For other colleges, show empty state for now
+                filteredExperiences = [];
+            }
+            
+            displayFilteredExperiences(filteredExperiences, college);
+        }
+
+        function displayFilteredExperiences(experiences, college) {
+            const container = document.getElementById('recentExperiences');
+            if (!container) return;
+            
+            if (experiences.length === 0) {
+                const collegeNames = {
+                    'nit': 'NiT',
+                    'nearby': 'Nearby Universities',
+                    'schools': 'Schools',
+                    'state': 'State Level',
+                    'national': 'National & Global'
+                };
+                
+                if (college === 'nit') {
+                    container.innerHTML = `
+                        <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 10px 0; text-align: center; color: #666;">
+                            <p>No ${collegeNames[college]} experiences shared yet.</p>
+                            <p style="font-size: 0.9rem; margin-top: 10px;">Be the first to share your ${collegeNames[college]} experience!</p>
+                        </div>
+                    `;
+                } else {
+                    container.innerHTML = `
+                        <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 10px 0; text-align: center; color: #666;">
+                            <p>${collegeNames[college]} - Coming Soon!</p>
+                            <p style="font-size: 0.9rem; margin-top: 10px;">We're expanding to more institutions. Stay tuned!</p>
+                        </div>
+                    `;
+                }
+            } else {
+                container.innerHTML = experiences.map(exp => `
+                    <div class="user-experience-card">
+                        <h4>${exp.title}</h4>
+                        <p>${exp.details.substring(0, 200)}${exp.details.length > 200 ? '...' : ''}</p>
+                        <div class="experience-meta">
+                            <span>${exp.category} • ${exp.college ? exp.college.toUpperCase() : 'General'}</span>
+                            <span>${new Date(exp.timestamp).toLocaleDateString()}</span>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // NiT-specific experience functions
+        function submitNiTExperience() {
+            const category = document.getElementById('nitExperienceCategory').value;
+            const title = document.getElementById('nitExperienceTitle').value;
+            const details = document.getElementById('nitExperienceDetails').value;
+            const takeaways = document.getElementById('nitKeyTakeaways').value;
+            const year = document.getElementById('nitStudentYear').value;
+            
+            if (!category || !title || !details || !takeaways || !year) {
+                showToast('Please fill in all required fields', 'error');
+                return;
+            }
+            
+            const experience = {
+                id: Date.now(),
+                category,
+                title,
+                details,
+                takeaways,
+                year,
+                college: 'nit', // Always NiT for this page
+                timestamp: new Date().toISOString(),
+                author: localStorage.getItem('gb:userName') || 'Anonymous'
+            };
+            
+            // Save to localStorage
+            const experiences = JSON.parse(localStorage.getItem('gb:experiences') || '[]');
+            experiences.unshift(experience);
+            localStorage.setItem('gb:experiences', JSON.stringify(experiences));
+            
+            // Update experience count
+            const currentCount = parseInt(localStorage.getItem('gb:experienceCount') || '0');
+            localStorage.setItem('gb:experienceCount', (currentCount + 1).toString());
+            updateExperienceCount();
+            
+            // Clear form
+            document.getElementById('nitExperienceCategory').value = '';
+            document.getElementById('nitExperienceTitle').value = '';
+            document.getElementById('nitExperienceDetails').value = '';
+            document.getElementById('nitKeyTakeaways').value = '';
+            document.getElementById('nitStudentYear').value = '';
+            
+            // Show success message
+            showToast('NiT Experience shared successfully! 🎉', 'success');
+            
+            // Refresh NiT experiences display
+            loadNiTExperiences();
+        }
+
+        function loadNiTExperiences() {
+            const experiences = JSON.parse(localStorage.getItem('gb:experiences') || '[]');
+            const nitExperiences = experiences.filter(exp => exp.college === 'nit');
+            const container = document.getElementById('nitExperiences');
+            
+            if (!container) return;
+            
+            if (nitExperiences.length === 0) {
+                container.innerHTML = `
+                    <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 10px 0; text-align: center; color: #666;">
+                        <p>No NiT experiences shared yet. Be the first to share your valuable NiT experience!</p>
+                        <p style="font-size: 0.9rem; margin-top: 10px;">Your experience will help junior NiT students and generate AI guidance for the community.</p>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = nitExperiences.map(exp => `
+                    <div class="user-experience-card">
+                        <h4>${exp.title}</h4>
+                        <p>${exp.details.substring(0, 200)}${exp.details.length > 200 ? '...' : ''}</p>
+                        <div class="experience-meta">
+                            <span>${exp.category} • ${exp.year} Year • NiT</span>
+                            <span>${new Date(exp.timestamp).toLocaleDateString()}</span>
+                        </div>
+                        <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(0,0,0,0.1);">
+                            <strong>Key Takeaways:</strong>
+                            <p style="margin-top: 8px; font-style: italic; color: #666;">${exp.takeaways}</p>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+                // Login/Logout functions
+        function checkLoginStatus() {
+            const isLoggedIn = localStorage.getItem('gb:loggedIn') === 'true';
+            const userEmail = localStorage.getItem('gb:userEmail');
+            const userName = localStorage.getItem('gb:userName');
+            
+            if (isLoggedIn && userEmail) {
+                document.getElementById('userProfile').style.display = 'block';
+                document.getElementById('loginButtons').style.display = 'none';
+                document.getElementById('profileNavItem').style.display = 'block';
+                document.getElementById('userEmail').textContent = userName || userEmail;
+            } else {
+                document.getElementById('userProfile').style.display = 'none';
+                document.getElementById('loginButtons').style.display = 'flex';
+                document.getElementById('profileNavItem').style.display = 'none';
+            }
+        }
 
         function logout() {
             localStorage.removeItem('gb:loggedIn');
             localStorage.removeItem('gb:userEmail');
+            localStorage.removeItem('gb:userName');
             window.location.href = 'login.html';
         }
+
+        // Navbar scroll behavior
+        let lastScrollTop = 0;
+        let scrollThreshold = 5; // Minimum scroll distance to trigger hide/show
+        let isScrolling = false;
+
+        function handleNavbarScroll() {
+            const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const header = document.querySelector('header');
+            const collegeNav = document.querySelector('.college-nav');
+            
+            // Prevent negative scrollTop values
+            if (currentScrollTop < 0) return;
+            
+            // Only trigger on significant scroll changes
+            if (Math.abs(currentScrollTop - lastScrollTop) < scrollThreshold) return;
+            
+            // Show navbar and college nav when at top of page
+            if (currentScrollTop <= 100) {
+                header.classList.remove('hidden');
+                if (collegeNav) collegeNav.classList.remove('scroll-hidden');
+            }
+            // Hide navbar and college nav when scrolling down, show when scrolling up
+            else if (currentScrollTop > lastScrollTop && currentScrollTop > 100) {
+                // Scrolling down - hide both navbar and college nav
+                header.classList.add('hidden');
+                if (collegeNav) collegeNav.classList.add('scroll-hidden');
+            } else if (currentScrollTop < lastScrollTop) {
+                // Scrolling up - show both navbar and college nav
+                header.classList.remove('hidden');
+                if (collegeNav) collegeNav.classList.remove('scroll-hidden');
+            }
+            
+            lastScrollTop = currentScrollTop;
+        }
+
+        // Throttle scroll events for better performance
+        function throttleScroll() {
+            if (!isScrolling) {
+                window.requestAnimationFrame(handleNavbarScroll);
+                isScrolling = true;
+                setTimeout(() => {
+                    isScrolling = false;
+                }, 16); // ~60fps
+            }
+        }
+
+        // Add scroll event listener when page loads
+        window.addEventListener('scroll', throttleScroll, { passive: true });
     </script>
 </body>
 </html>

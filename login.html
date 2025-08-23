@@ -695,13 +695,40 @@
         }
 
         .logo-icon {
-            font-size: 4rem;
             margin-bottom: 16px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: pulse 2s infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .guidebook-icon {
+            width: 48px;
+            height: 48px;
+            filter: drop-shadow(0 4px 8px rgba(79, 70, 229, 0.3));
+            transition: all 0.3s ease;
+        }
+        
+        .guidebook-icon:hover {
+            transform: scale(1.1) rotate(5deg);
+            filter: drop-shadow(0 6px 12px rgba(79, 70, 229, 0.4));
+        }
+        
+        .icon-bg {
+            animation: iconPulse 3s ease-in-out infinite;
+        }
+        
+        @keyframes iconPulse {
+            0%, 100% { fill: #4f46e5; }
+            50% { fill: #7c3aed; }
+        }
+        
+        body.dark-mode .icon-bg {
+            animation: iconPulseDark 3s ease-in-out infinite;
+        }
+        
+        @keyframes iconPulseDark {
+            0%, 100% { fill: #8b5cf6; }
+            50% { fill: #a855f7; }
         }
 
         @keyframes pulse {
@@ -1187,33 +1214,53 @@
     <div class="login-container">
         <div class="login-card">
             <div class="logo-section">
-                <div class="logo-icon">🎯</div>
+                <div class="logo-icon">
+                    <svg width="48" height="48" viewBox="0 0 100 100" class="guidebook-icon">
+                        <circle cx="50" cy="50" r="45" fill="#4f46e5" class="icon-bg"/>
+                        <path d="M35 25 C30 25, 25 30, 25 35 L25 45 C25 50, 30 55, 35 55 L40 55 C42 55, 44 57, 44 59 L44 65 C44 70, 49 75, 54 75 L65 75 C70 75, 75 70, 75 65 L75 55 C75 50, 70 45, 65 45 L60 45 C58 45, 56 43, 56 41 L56 35 C56 30, 51 25, 46 25 L35 25 Z" fill="white" class="puzzle-piece"/>
+                    </svg>
+                </div>
                 <h1 class="brand-name">Guidebook</h1>
                 <p class="tagline">AI-Powered Student Guidance Platform</p>
             </div>
 
             <div id="errorMessage" class="error-message"></div>
 
-            <form id="loginForm">
+            <form id="authForm">
                 <div class="form-group">
                     <label for="email">Email Address</label>
                     <input type="email" id="email" placeholder="Enter your email" required>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" id="passwordGroup">
                     <label for="password">Password</label>
                     <input type="password" id="password" placeholder="Enter your password" required>
                     <button type="button" class="password-toggle" onclick="togglePassword()">👁️</button>
                 </div>
 
-                <button type="submit" class="login-btn" id="loginBtn">
+                <div class="form-group" id="confirmPasswordGroup" style="display: none;">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" placeholder="Confirm your password">
+                    <button type="button" class="password-toggle" onclick="toggleConfirmPassword()">👁️</button>
+                </div>
+
+                <div class="form-group" id="nameGroup" style="display: none;">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" placeholder="Enter your full name">
+                </div>
+
+                <button type="submit" class="login-btn" id="authBtn">
                     <span class="btn-text">Sign In</span>
                     <div class="loading">
                         <div class="spinner"></div>
-                        <span>Signing in...</span>
+                        <span>Processing...</span>
                     </div>
                 </button>
             </form>
+
+            <div class="auth-switch">
+                <p id="authSwitchText">Don't have an account? <a href="#" onclick="switchAuthMode()">Sign up</a></p>
+            </div>
 
             <div class="divider">
                 <span>or continue with</span>
@@ -1230,9 +1277,6 @@
                 </button>
             </div>
 
-            <div class="signup-link">
-                Don't have an account? <a href="#" onclick="showSignup()">Sign up</a>
-            </div>
         </div>
     </div>
 
@@ -1251,20 +1295,80 @@
             }
         }
 
+        // Authentication state
+        let isSignUpMode = false;
+        
+        // Toggle between sign in and sign up
+        function switchAuthMode() {
+            isSignUpMode = !isSignUpMode;
+            const confirmPasswordGroup = document.getElementById('confirmPasswordGroup');
+            const nameGroup = document.getElementById('nameGroup');
+            const authBtn = document.getElementById('authBtn');
+            const btnText = authBtn.querySelector('.btn-text');
+            const authSwitchText = document.getElementById('authSwitchText');
+            
+            if (isSignUpMode) {
+                confirmPasswordGroup.style.display = 'block';
+                nameGroup.style.display = 'block';
+                btnText.textContent = 'Sign Up';
+                authSwitchText.innerHTML = 'Already have an account? <a href="#" onclick="switchAuthMode()">Sign in</a>';
+                document.getElementById('confirmPassword').required = true;
+                document.getElementById('fullName').required = true;
+            } else {
+                confirmPasswordGroup.style.display = 'none';
+                nameGroup.style.display = 'none';
+                btnText.textContent = 'Sign In';
+                authSwitchText.innerHTML = 'Don\'t have an account? <a href="#" onclick="switchAuthMode()">Sign up</a>';
+                document.getElementById('confirmPassword').required = false;
+                document.getElementById('fullName').required = false;
+            }
+        }
+        
+        // Password toggle functions
+        function toggleConfirmPassword() {
+            const passwordInput = document.getElementById('confirmPassword');
+            const toggleBtn = document.querySelectorAll('.password-toggle')[1];
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleBtn.textContent = '🙈';
+            } else {
+                passwordInput.type = 'password';
+                toggleBtn.textContent = '👁️';
+            }
+        }
+        
         // Form submission
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+        document.getElementById('authForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const fullName = document.getElementById('fullName').value;
             
             if (!email || !password) {
-                showError('Please fill in all fields');
+                showError('Please fill in all required fields');
                 return;
             }
             
+            if (isSignUpMode) {
+                if (!fullName) {
+                    showError('Please enter your full name');
+                    return;
+                }
+                if (password !== confirmPassword) {
+                    showError('Passwords do not match');
+                    return;
+                }
+                if (password.length < 6) {
+                    showError('Password must be at least 6 characters long');
+                    return;
+                }
+            }
+            
             // Show loading state
-            const btn = document.getElementById('loginBtn');
+            const btn = document.getElementById('authBtn');
             const btnText = btn.querySelector('.btn-text');
             const loading = btn.querySelector('.loading');
             
@@ -1272,23 +1376,60 @@
             loading.style.display = 'flex';
             btn.disabled = true;
             
-            // Simulate login process
+            // Simulate authentication process
             setTimeout(() => {
-                // For demo purposes, accept any email/password
-                if (email && password) {
-                    // Store login state
+                if (isSignUpMode) {
+                    // Sign up process
+                    const users = JSON.parse(localStorage.getItem('gb:users') || '{}');
+                    
+                    if (users[email]) {
+                        showError('An account with this email already exists');
+                        resetButton();
+                        return;
+                    }
+                    
+                    // Create new user
+                    users[email] = {
+                        password: password,
+                        fullName: fullName,
+                        joinDate: new Date().toISOString(),
+                        experiencesShared: 0,
+                        profileViews: 0,
+                        reputation: 0
+                    };
+                    
+                    localStorage.setItem('gb:users', JSON.stringify(users));
+                    
+                    // Auto login after signup
                     localStorage.setItem('gb:loggedIn', 'true');
                     localStorage.setItem('gb:userEmail', email);
+                    localStorage.setItem('gb:userName', fullName);
                     
-                    // Redirect to main page
                     window.location.href = 'index.html';
                 } else {
-                    showError('Invalid credentials');
-                    btnText.style.display = 'block';
-                    loading.style.display = 'none';
-                    btn.disabled = false;
+                    // Sign in process
+                    const users = JSON.parse(localStorage.getItem('gb:users') || '{}');
+                    
+                    if (!users[email] || users[email].password !== password) {
+                        showError('Invalid email or password');
+                        resetButton();
+                        return;
+                    }
+                    
+                    // Login successful
+                    localStorage.setItem('gb:loggedIn', 'true');
+                    localStorage.setItem('gb:userEmail', email);
+                    localStorage.setItem('gb:userName', users[email].fullName);
+                    
+                    window.location.href = 'index.html';
                 }
             }, 2000);
+            
+            function resetButton() {
+                btnText.style.display = 'block';
+                loading.style.display = 'none';
+                btn.disabled = false;
+            }
         });
 
         // Social login
@@ -1296,10 +1437,6 @@
             showError(`${provider} login coming soon!`);
         }
 
-        // Show signup
-        function showSignup() {
-            showError('Sign up feature coming soon!');
-        }
 
         // Error handling
         function showError(message) {
